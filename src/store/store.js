@@ -3,10 +3,10 @@ import authreducer from '../Appwrite/auth/authSlice'
 
 const store=configureStore({
     reducer:{
-        authreducer
+        auth:authreducer
     }
           
     
 })
 
-export default store
+export default store 
