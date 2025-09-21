@@ -1,20 +1,81 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
+
 import './App.css'
+import { login, logout } from './Appwrite/auth/authSlice'
+import { useDispatch } from 'react-redux'
+import authService from './Appwrite/auth/auth'
+
+import { AppBar, Box, Grid } from '@mui/material'
+
+
+import Login from './components/authcomp/Login'
+import AppRoutes from './Routes/Routes'
+
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
-  console.log(import.meta.env.VITE_APPWRITE_URL)
+  // const [loading, setLoading] = useState(true)
+  // const dispatch = useDispatch()
 
-  
-   
+  // useEffect(() => {
+
+  //   authService.getAccount()
+  //     .then((userData) => {
+  //       if (userData) {
+  //         dispatch(login(userData))
+
+  //       }
+  //       else {
+  //         dispatch(logout())
+  //       }
+
+
+  //     })
+  //     .finally(() => setLoading(false))
+
+
+
+
+
+  // }, [])
+
+
+
+
+
+
+
+
 
 
   return (
-      
+
     <>
-      <div className='h-3 bg-red-500'>hi</div>
+
+      {/* <AppBar position='sticky'>
+          <Toolbar>My App</Toolbar>
+          
+        </AppBar> */}
+
+      
+
+      <AppRoutes/>
+
+
+
+
+
+       
+      
+
+      
+
+      
+
+    
+
+
 
     </>
   )

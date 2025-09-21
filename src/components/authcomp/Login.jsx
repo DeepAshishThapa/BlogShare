@@ -32,7 +32,7 @@ function Login() {
                         <TextField id="outlined-basic" label="Enter email" variant="outlined" type='email' required fullWidth sx={{ mb: 2 }} value={email} onChange ={(e)=>setEmail(e.target.value)}/>
                         <TextField id="outlined-basic" label="Enter password" variant="outlined" required fullWidth sx={{ mb: 2 }} value={password} onChange={(e)=>setPassword(e.target.value)}/>
 
-                        <FormControlLabel control={<Checkbox checked={remember} onChange={(e)=>setRemember(e.target.checked)}/>} label="Remember Password" sx={{mb:2}} />
+                        {/* <FormControlLabel control={<Checkbox checked={remember} onChange={(e)=>setRemember(e.target.checked)}/>} label="Remember Password" sx={{mb:2}} /> */}
                         <Button type="submit" variant="contained" fullWidth>Log In</Button>
 
                     </form>

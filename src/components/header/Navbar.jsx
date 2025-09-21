@@ -15,6 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useSelector } from 'react-redux';
 
 import { useNavigate } from "react-router";
+import { NavLink } from 'react-router';
 
 
 
@@ -24,7 +25,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 
 function ResponsiveAppBar() {
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   const authStatus = useSelector((state) => state.auth.status)
   const pages = [{
     name: 'Home',
@@ -35,7 +36,7 @@ function ResponsiveAppBar() {
   {
     name: "All Posts",
     slug: "/all-posts",
-    active: authStatus
+    active: true
   },
   {
     name: "Add Posts",
@@ -56,6 +57,11 @@ function ResponsiveAppBar() {
       slug: "/signup",
       active: !authStatus
 
+    },
+    {
+      name: "Logout",
+      slug: "/",
+      active: authStatus
     }
 
 
@@ -84,7 +90,13 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed"
+      
+      sx={{
+        backgroundImage: 'linear-gradient(to right, #0a1f44 0%, #2547a7 50%)',
+        bgcolor: 'transparent',
+      }}
+    >
 
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -160,26 +172,37 @@ function ResponsiveAppBar() {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' },gap:5,ml:5 }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: 5, ml: 5 }}>
             {pages.map((page) => (
-              <Button
+              <NavLink
                 key={page.slug}
-                onClick={()=>{
-                   handleCloseNavMenu();
-                    navigate(page.slug);
-                }}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-                
+                to={page.slug}
+                style={({ isActive }) => ({
+                  color: isActive ? "#6d96bf" : "white", // 🔥 highlight active link
+                  textDecoration: "none",
+                  
+                })}
               >
-                {page.name}
-              </Button>
+                <Button sx={{ color: "inherit" }}>{page.name}</Button>
+              </NavLink>
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             {authitems.map((authitem) => (
-              <Button key={authitem.slug} onClick={()=>navigate(authitem.slug)}sx={{color:'white'}}>
-                {authitem.name}
-              </Button>
+              authitem.active &&
+               <NavLink
+                key={authitem.slug}
+                to={authitem.slug}
+                style={({ isActive }) => ({
+                  color: isActive ? "#93b1ce" : "white", // 🔥 highlight active link
+                  textDecoration: "none",
+                  
+                })}
+              >
+                <Button sx={{ color: "inherit" }}>{authitem.name}</Button>
+              </NavLink>
+
+             
             ))}
 
 
