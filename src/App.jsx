@@ -15,6 +15,7 @@ import AppRoutes from './Routes/Routes'
 
 
 function App() {
+  const dispatch = useDispatch();
   // const [loading, setLoading] = useState(true)
   // const dispatch = useDispatch()
 
@@ -41,6 +42,19 @@ function App() {
   // }, [])
 
 
+  useEffect(() => {
+    authService.getAccount()
+      .then((userData) => {
+        if (userData) {
+          dispatch(login(userData)); // ✅ restore session
+        } else {
+          dispatch(logout());
+        }
+      })
+      .catch(() => dispatch(logout()));
+  }, [dispatch]);
+
+
 
 
 
@@ -58,22 +72,22 @@ function App() {
           
         </AppBar> */}
 
-      
-
-      <AppRoutes/>
 
 
+      <AppRoutes />
 
 
 
-       
-      
 
-      
 
-      
 
-    
+
+
+
+
+
+
+
 
 
 
