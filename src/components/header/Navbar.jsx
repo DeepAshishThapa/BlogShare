@@ -17,6 +17,10 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router";
 import { NavLink } from 'react-router';
 
+import authService from '@/Appwrite/auth/auth';
+import { login, logout } from "../../Appwrite/auth/authSlice.js"
+import { useDispatch } from 'react-redux';
+
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -25,6 +29,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 
 function ResponsiveAppBar() {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const authStatus = useSelector((state) => state.auth.status)
   const pages = [{
@@ -89,9 +94,29 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+
+  const handlelogout = async () => {
+    try {
+      await authService.logout()
+      dispatch(logout())
+
+
+
+    } catch (error) {
+      console.log(error)
+
+
+    }
+    finally {
+      navigate("/");
+    }
+
+
+  }
+
   return (
     <AppBar position="fixed"
-      
+
       sx={{
         backgroundImage: 'linear-gradient(to right, #0a1f44 0%, #2547a7 50%)',
         bgcolor: 'transparent',
@@ -148,7 +173,17 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page.slug} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{page.name}</Typography>
+                  <NavLink
+                    key={page.slug}
+                    to={page.slug}
+                    style={({ isActive }) => ({
+                      color: isActive ? "#6d96bf" : "black", // 🔥 highlight active link
+                      textDecoration: "none",
+
+                    })}
+                  >
+                    <Button sx={{ color: "inherit" }}>{page.name}</Button>
+                  </NavLink>
                 </MenuItem>
               ))}
             </Menu>
@@ -180,7 +215,7 @@ function ResponsiveAppBar() {
                 style={({ isActive }) => ({
                   color: isActive ? "#6d96bf" : "white", // 🔥 highlight active link
                   textDecoration: "none",
-                  
+
                 })}
               >
                 <Button sx={{ color: "inherit" }}>{page.name}</Button>
@@ -188,22 +223,29 @@ function ResponsiveAppBar() {
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            {authitems.map((authitem) => (
+            {authitems.map((authitem) =>
               authitem.active &&
-               <NavLink
-                key={authitem.slug}
-                to={authitem.slug}
-                style={({ isActive }) => ({
-                  color: isActive ? "#93b1ce" : "white", // 🔥 highlight active link
-                  textDecoration: "none",
-                  
-                })}
-              >
-                <Button sx={{ color: "inherit" }}>{authitem.name}</Button>
-              </NavLink>
-
-             
-            ))}
+              (authitem.name === "Logout" ? (
+                <Button
+                  key={authitem.slug}
+                  onClick={handlelogout}   // 👈 use handler instead of NavLink
+                  sx={{ color: "white" }}
+                >
+                  {authitem.name}
+                </Button>
+              ) : (
+                <NavLink
+                  key={authitem.slug}
+                  to={authitem.slug}
+                  style={({ isActive }) => ({
+                    color: isActive ? "#93b1ce" : "white",
+                    textDecoration: "none",
+                  })}
+                >
+                  <Button sx={{ color: "inherit" }}>{authitem.name}</Button>
+                </NavLink>
+              ))
+            )}
 
 
 
