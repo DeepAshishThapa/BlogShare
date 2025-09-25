@@ -118,7 +118,7 @@ function ResponsiveAppBar() {
     <AppBar position="fixed"
 
       sx={{
-        backgroundImage: 'linear-gradient(to right, #0a1f44 0%, #2547a7 50%)',
+        backgroundImage: 'linear-gradient(to right, #0a1f44 0%, #1d3989 70%)',
         bgcolor: 'transparent',
       }}
     >
@@ -141,7 +141,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            BSHARE
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
