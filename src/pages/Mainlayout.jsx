@@ -8,7 +8,7 @@ function Mainlayout() {
     return (
         <>
             <ResponsiveAppBar/>
-            <Box sx={{pt:10}}></Box>
+            <Box sx={{pt:{xs:7,sm:8}}}></Box>
 
             <Outlet/>
              
