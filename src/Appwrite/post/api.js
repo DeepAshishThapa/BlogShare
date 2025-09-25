@@ -1,4 +1,4 @@
-import { Client, TablesDB, ID } from "appwrite";
+import { Client, TablesDB, ID, Storage, Query} from "appwrite";
 import config from "../../config/config";
 
 export class PostService {
@@ -157,3 +157,5 @@ export class PostService {
         }
     }
 }
+const postService=new PostService();
+export default postService
