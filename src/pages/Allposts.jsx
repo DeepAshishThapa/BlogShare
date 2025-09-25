@@ -1,9 +1,11 @@
 import React from 'react'
+import MediaCard from "../components/card/Card.jsx"
 
 function Allposts() {
   return (
     <div>
-        <div>Allposts</div>
+        
+        <MediaCard/>
       
     </div>
   )
