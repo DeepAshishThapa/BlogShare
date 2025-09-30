@@ -84,7 +84,7 @@ function Login() {
                         />
                         <TextField id="outlined-basic" label="Enter password" variant="outlined" fullWidth sx={{ mb: 2 }}
                             {...register("password", {
-                                required: "Email is required",
+                                required: "Password is required",
 
                             })}
                             error={!!errors.password}
