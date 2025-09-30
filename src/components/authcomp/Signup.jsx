@@ -1,13 +1,9 @@
 import React from 'react'
-import { Paper, Typography, TextField, FormControlLabel, Checkbox, Button } from '@mui/material'
-import { Container } from '@mui/material'
+import { Paper, Typography, TextField, Button, Container, Alert, Snackbar } from '@mui/material'
 import LockIcon from '@mui/icons-material/Lock';
 import { useState } from 'react';
 import authService from "@/Appwrite/auth/auth"
 import { useNavigate } from 'react-router';
-import Alert from '@mui/material/Alert';
-import Stack from '@mui/material/Stack';
-import Snackbar from '@mui/material/Snackbar';
 import { login, logout } from "../../Appwrite/auth/authSlice"
 import { useDispatch } from 'react-redux'
 import CheckIcon from '@mui/icons-material/Check';
@@ -24,8 +20,6 @@ function Signup() {
         handleSubmit,
         watch,
         formState: { errors, isSubmitting },
-
-
     } = useForm()
 
     const pwd = watch("password")
@@ -42,7 +36,6 @@ function Signup() {
     const handleCloseError = (event, reason) => {
         if (reason === 'clickaway') {
             return;
-
         }
         setopenError(false)
     }
@@ -50,28 +43,20 @@ function Signup() {
     const handleCloseSuccess = (event, reason) => {
         if (reason === "clickaway") {
             return;
-
         }
         setOpenSuccess(false);
-
-
     };
 
 
     const onSubmit = async (data) => {
-        
+
         try {
-             const { confirmPassword, ...formData } = data;
+            const { confirmPassword, ...formData } = data;
             const userData = await authService.createAccount(formData)
 
             dispatch(login(userData));
-
             setSuccessMsg("Signup successful!");
             setOpenSuccess(true)
-
-
-
-
             setTimeout(() => navigate("/"), 1500);
 
 
@@ -81,16 +66,12 @@ function Signup() {
             console.log(error)
             setError(error.message)
             setopenError(true)
-
-
         }
-
 
     }
     return (
         <div>
-            <Container maxWidth="sm" sx={{ mt: 10 }}
-            >
+            <Container maxWidth="sm" sx={{ mt: 10 }}>
 
                 <Paper sx={{ padding: 2, textAlign: "center" }} >
                     <LockIcon color="primary" />
@@ -101,12 +82,13 @@ function Signup() {
                     </Typography>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <TextField id="outlined-basic" label="Enter name" variant="outlined" fullWidth sx={{ mb: 2 }}
-                            {...register("name",{required:"Name is required"})}
+                            {...register("name", { required: "Name is required" })}
                             error={!!errors.name}
                             helperText={errors.name?.message}
                         />
                         <TextField id="outlined-basic" label="Enter email" variant="outlined" fullWidth sx={{ mb: 2 }}
-                            {...register("email",{required:"Email is required",
+                            {...register("email", {
+                                required: "Email is required",
                                 pattern: {
                                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                                     message: "Enter a valid email address",
@@ -114,10 +96,10 @@ function Signup() {
                             })}
                             error={!!errors.email}
                             helperText={errors.email?.message}
-                            
+
                         />
                         <TextField id="outlined-basic" label="Enter password" variant="outlined" fullWidth sx={{ mb: 2 }}
-                            {...register("password",{required:"Password is required"})}
+                            {...register("password", { required: "Password is required" })}
                             error={!!errors.password}
                             helperText={errors.password?.message}
 
@@ -150,14 +132,11 @@ function Signup() {
                 autoHideDuration={4000}
                 onClose={handleCloseError}
 
-
             >
                 <Alert onClose={handleCloseError} severity="error" variant="filled" sx={{ width: "100%" }}>
                     {Error}
                 </Alert>
             </Snackbar>
-
-
 
             <Snackbar
                 open={openSuccess}
