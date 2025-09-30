@@ -11,16 +11,26 @@ import Snackbar from '@mui/material/Snackbar';
 import { login, logout } from "../../Appwrite/auth/authSlice"
 import { useDispatch } from 'react-redux'
 import CheckIcon from '@mui/icons-material/Check';
-
+import { useForm } from 'react-hook-form';
 
 
 function Signup() {
+
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [name, setName] = useState("")
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors, isSubmitting },
+
+
+    } = useForm()
+
+    const pwd = watch("password")
+
+
 
     const [Error, setError] = useState("")
     const [openError, setopenError] = useState(false)
@@ -48,32 +58,11 @@ function Signup() {
     };
 
 
-
-
-    const handlelogout = async () => {
+    const onSubmit = async (data) => {
+        
         try {
-            await authService.logout()
-
-        }
-        catch (error) {
-            console.log(error)
-
-        } finally {
-            dispatch(logout());
-            navigate("/");
-        }
-
-
-    }
-
-
-
-
-
-    const handlesubmit = async (e) => {
-        e.preventDefault()
-        try {
-            const userData = await authService.createAccount({ email, password, name })
+             const { confirmPassword, ...formData } = data;
+            const userData = await authService.createAccount(formData)
 
             dispatch(login(userData));
 
@@ -110,13 +99,47 @@ function Signup() {
                         Sign Up
 
                     </Typography>
-                    <form onSubmit={handlesubmit}>
-                        <TextField id="outlined-basic" label="Enter name" variant="outlined" required fullWidth sx={{ mb: 2 }} value={name} onChange={(e) => setName(e.target.value)} />
-                        <TextField id="outlined-basic" label="Enter email" variant="outlined" type='email' required fullWidth sx={{ mb: 2 }} value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <TextField id="outlined-basic" label="Enter password" variant="outlined" required fullWidth sx={{ mb: 2 }} value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <TextField id="outlined-basic" label="Enter name" variant="outlined" fullWidth sx={{ mb: 2 }}
+                            {...register("name",{required:"Name is required"})}
+                            error={!!errors.name}
+                            helperText={errors.name?.message}
+                        />
+                        <TextField id="outlined-basic" label="Enter email" variant="outlined" fullWidth sx={{ mb: 2 }}
+                            {...register("email",{required:"Email is required",
+                                pattern: {
+                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                    message: "Enter a valid email address",
+                                },
+                            })}
+                            error={!!errors.email}
+                            helperText={errors.email?.message}
+                            
+                        />
+                        <TextField id="outlined-basic" label="Enter password" variant="outlined" fullWidth sx={{ mb: 2 }}
+                            {...register("password",{required:"Password is required"})}
+                            error={!!errors.password}
+                            helperText={errors.password?.message}
+
+                        />
+                        <TextField id="outlined-basic" label="Confirm Password" variant="outlined" fullWidth sx={{ mb: 2 }}
+                            {...register("confirmPassword", {
+                                required: "Please confirm your password",
+                                validate: (v) => v === pwd || "Passwords do not match",
+                            })}
+                            error={!!errors.confirmPassword}
+                            helperText={errors.confirmPassword?.message}
+                        />
 
 
-                        <Button type="submit" variant="contained" fullWidth>Sign Up</Button>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            fullWidth
+                            disabled={isSubmitting}     // ⬅️ disabled while submitting
+                        >
+                            {isSubmitting ? "Submitting..." : "SignUp"}
+                        </Button>
 
                     </form>
 
@@ -135,15 +158,12 @@ function Signup() {
             </Snackbar>
 
 
-            <Button variant="contained" onClick={handlelogout}>Logout</Button>
-
-
 
             <Snackbar
                 open={openSuccess}
                 autoHideDuration={2500}
                 onClose={handleCloseSuccess}
-                
+
             >
                 <Alert
                     onClose={handleCloseSuccess}
