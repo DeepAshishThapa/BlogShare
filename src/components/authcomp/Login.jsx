@@ -1,15 +1,12 @@
 import React from 'react'
-import { Paper, Typography, TextField, FormControlLabel, Checkbox, Button } from '@mui/material'
-import { Container } from '@mui/material'
+import { Paper, Typography, TextField, Button, Container, Alert, Snackbar } from '@mui/material'
 import LockIcon from '@mui/icons-material/Lock';
+import CheckIcon from '@mui/icons-material/Check';
 import { useState } from 'react';
 import authService from '@/Appwrite/auth/auth';
 import { login } from '../../Appwrite/auth/authSlice.js'
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import Alert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
-import CheckIcon from '@mui/icons-material/Check';
 import { useForm } from 'react-hook-form';
 
 function Login() {
@@ -20,8 +17,6 @@ function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-
-
     const [Error, setError] = useState("")
     const [openError, setopenError] = useState(false)
 
@@ -31,25 +26,22 @@ function Login() {
     const handleCloseError = (event, reason) => {
         if (reason === 'clickaway') {
             return;
-
         }
         setopenError(false)
     }
 
+
     const handleCloseSuccess = (event, reason) => {
         if (reason === "clickaway") {
             return;
-
         }
         setOpenSuccess(false);
-
-
     };
 
 
 
     const onSubmit = async (data) => {
-        
+
         try {
             const userData = await authService.login(data)
             dispatch(login(userData))
@@ -64,12 +56,10 @@ function Login() {
             setopenError(true)
         }
 
-
     }
     return (
         <div>
-            <Container maxWidth="sm" sx={{ mt: 10 }}
-            >
+            <Container maxWidth="sm" sx={{ mt: 10 }}>
 
                 <Paper sx={{ padding: 2, textAlign: "center" }} >
                     <LockIcon color="primary" />
@@ -102,14 +92,13 @@ function Login() {
 
                         />
 
-                        {/* <FormControlLabel control={<Checkbox checked={remember} onChange={(e)=>setRemember(e.target.checked)}/>} label="Remember Password" sx={{mb:2}} /> */}
                         <Button
                             type="submit"
                             variant="contained"
                             fullWidth
-                            disabled={isSubmitting}     
+                            disabled={isSubmitting}
                         >
-                           {isSubmitting ? "Submitting..." : "LogIn"}
+                            {isSubmitting ? "Submitting..." : "LogIn"}
                         </Button>
 
                     </form>
@@ -143,12 +132,6 @@ function Login() {
                     {successMsg}
                 </Alert>
             </Snackbar>
-
-
-
-
-
-
 
         </div>
     )
