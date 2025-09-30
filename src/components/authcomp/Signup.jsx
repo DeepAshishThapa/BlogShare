@@ -72,7 +72,7 @@ function Signup() {
 
 
 
-            setTimeout(() => navigate("/"), 1000);
+            setTimeout(() => navigate("/"), 1500);
 
 
         }
