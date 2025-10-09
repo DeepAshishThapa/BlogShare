@@ -8,6 +8,9 @@ import { login } from '../../Appwrite/auth/authSlice.js'
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { InputAdornment, IconButton } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function Login() {
     const { register,
@@ -22,6 +25,8 @@ function Login() {
 
     const [successMsg, setSuccessMsg] = useState("");
     const [openSuccess, setOpenSuccess] = useState(false);
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleCloseError = (event, reason) => {
         if (reason === 'clickaway') {
@@ -87,8 +92,24 @@ function Login() {
                                 required: "Password is required",
 
                             })}
+                             type={showPassword ? "text" : "password"}
                             error={!!errors.password}
                             helperText={errors.password?.message}
+                            slotProps={{
+                                input: {
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                onClick={() => setShowPassword((v) => !v)}
+                                                edge="end"
+                                                aria-label={showPassword ? "Hide password" : "Show password"}
+                                            >
+                                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                },
+                            }}
 
                         />
 
