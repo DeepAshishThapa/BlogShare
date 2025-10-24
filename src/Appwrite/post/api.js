@@ -131,7 +131,7 @@ export class PostService {
 
     async deletefile(fileId) {
         try {
-            result = await this.storage.deletefile({
+            result = await this.storage.deleteFile({
                 bucketId: config.appwriteBucketId,
                 fileId
 
