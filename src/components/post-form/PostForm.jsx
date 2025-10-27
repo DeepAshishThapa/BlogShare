@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { RTE } from "../RTE";
 import postService from "../../Appwrite/posts/api";
-import { TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
+
 
 
 export default function PostForm({ post }) {
@@ -90,13 +91,88 @@ export default function PostForm({ post }) {
     }, []);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <TextField id="outlined-basic" label="title" variant="outlined"
-            {...register("title",{required:"title is required"})}
-            />
+        <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            sx={{
+                display: "flex",
+                flexWrap: "wrap",
+            }}
+        >
+            <Box sx={{ width: "66.66%", px: 2 }}>
+                <TextField
+                    id="outlined-basic"
+                    label="Title"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                    {...register("title", {
+                        required: "Title is required",
+
+                    })}
+                    error={!!errors.title}
+                    helperText={errors.title?.message}
+                    onInput={(e) => {
+                        const Slugvalue = slugTransform(e.currentTarget.value)
+                        setValue("slug", Slugvalue, { shouldValidate: true })
+                    }}
 
 
-        </form>
+
+                />
+                <TextField
+                    id="outlined-basic"
+                    label="slug"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                    {...register("slug", {
+                        required: "slug is required",
+
+                    })}
+                    error={!!errors.slug}
+                    helperText={errors.slug?.message}
+                    onInput={(e) => {
+                        setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true })
+
+                    }}
+
+                />
+                <RTE control={control} name="content" defaultValues={getValue("content")} label="content" />
+
+            </Box>
+
+            <Box sx={{ width: "33.33%", px: 2 }} >
+                <TextField
+                    id="outlined-basic"
+                    type="file"
+                    label="Enter Image"
+                    sx={{ mb: 4 }}
+                    accept="image/png, image/jpg, image/jpeg, image/gif"
+                    {...register("image", {
+                        required: !post ? "Image is required" : false
+                    })}
+                />
+                {post && (
+                    <Box
+                        component="img"
+                        src={postService.getfilepreview(post.featuredImage)}
+                        sx={{
+                            width: "100%",
+                            mb: 4
+                        }}>
+                    </Box>
+                )
+                }
+
+
+            </Box>
+
+
+
+
+
+        </Box>
+
+
 
 
     )
