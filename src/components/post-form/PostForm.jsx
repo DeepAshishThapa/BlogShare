@@ -21,7 +21,7 @@ export default function PostForm({ post }) {
             }
         }
     )
-    const slug = watch("slug");
+    const slug = watch("slug")
 
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData)
