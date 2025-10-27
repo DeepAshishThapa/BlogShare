@@ -41,7 +41,7 @@ export class PostService {
             throw error
         }
     }
-    async UpdatePost({ slug, title, content, featuredImage, status, userId }) {
+    async UpdatePost({ slug, title, content, featuredImage, status }) {
         try {
             return await this.tablesDB.createRow({
                 databaseId: config.appwriteDatabaseId,
@@ -52,7 +52,7 @@ export class PostService {
                     content,
                     featuredImage,
                     status,
-                    userId
+                    
 
                 }
 
