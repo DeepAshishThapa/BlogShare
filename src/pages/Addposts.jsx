@@ -1,11 +1,22 @@
 import React from 'react'
+import PostForm from "../components/post-form/PostForm";
+import { Box } from '@mui/material';
 
 function Addposts() {
   return (
-    <div>
-        Addposts
-      
-    </div>
+    <>
+    <Box
+        sx={{
+          
+          color: 'white',
+          py: { xs: 5, sm: 5},
+
+        }}
+      >
+        <PostForm/>
+      </Box>
+    
+    </>
   )
 }
 
