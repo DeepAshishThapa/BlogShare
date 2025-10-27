@@ -101,7 +101,7 @@ export default function PostForm({ post }) {
                 flexWrap: "wrap",
             }}
         >
-            <Box sx={{ width: "66.66%", px: 2 }}>
+            <Box sx={{ flexGrow: 2,flexBasis: '500px', px: 2 }}>
                 <TextField
                     id="outlined-basic"
                     label="Title"
@@ -140,7 +140,7 @@ export default function PostForm({ post }) {
 
             </Box>
 
-            <Box sx={{ width: "33.33%", px: 2 }} >
+            <Box sx={{ flexGrow: 1,flexBasis: '250px', px: 2 }} >
                 <TextField
                     id="outlined-basic"
                     type="file"
