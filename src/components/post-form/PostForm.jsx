@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { RTE } from "../RTE";
 import postService from "../../Appwrite/posts/api";
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, InputLabel, MenuItem, FormControl, Select } from "@mui/material";
+import { Controller } from "react-hook-form";
 
 
 
@@ -160,8 +161,33 @@ export default function PostForm({ post }) {
                             mb: 4
                         }}>
                     </Box>
+
                 )
                 }
+                <Controller
+                    name="status"
+                    control={control}
+                    defaultValue="active"
+                    rules={{ required: "Status is required" }}
+                    render={({ field }) => (
+                        <FormControl fullWidth>
+                            <InputLabel id="active-input">Status</InputLabel>
+                            <Select
+                                {...field}
+                                labelId="active-input"
+                                id="active"
+                                label="Status"
+                            >
+                                <MenuItem value="active">active</MenuItem>
+                                <MenuItem value="inactive">inactive</MenuItem>
+
+                            </Select>
+                        </FormControl>
+
+                    )}
+                />
+
+
 
 
             </Box>
