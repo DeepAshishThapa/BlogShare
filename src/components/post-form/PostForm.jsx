@@ -149,6 +149,8 @@ export default function PostForm({ post }) {
                     {...register("image", {
                         required: !post ? "Image is required" : false
                     })}
+                    error={!!errors.image}
+                    helperText={errors.image?.message}
                 />
                 {post && (
                     <Box
