@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { RTE } from "../RTE";
-import postService from "../../Appwrite/posts/api";
+import  RTE  from "../RTE";
+import postService from "../../Appwrite/post/api";
 import { Box, TextField, InputLabel, MenuItem, FormControl, Select, Button } from "@mui/material";
 import { Controller } from "react-hook-form";
 
@@ -11,7 +11,7 @@ import { Controller } from "react-hook-form";
 
 export default function PostForm({ post }) {
 
-    const { control, register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm(
+    const { control, register, handleSubmit, setValue,getValues, formState: { errors, isSubmitting },watch } = useForm(
         {
             defaultValues: {
                 title: post?.title || "",
@@ -21,6 +21,7 @@ export default function PostForm({ post }) {
             }
         }
     )
+    const slug = watch("slug");
 
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData)
@@ -29,13 +30,13 @@ export default function PostForm({ post }) {
 
         try {
             if (post) {
-                const file = data.image[0] ? await postService.uploadFile(data.image[0]) : null;
+                const file = data.image[0] ? await postService.uploadfile(data.image[0]) : null;
 
                 if (file) {
-                    postService.deleteFile(post.featuredImage)
+                    postService.deletefile(post.featuredImage)
 
                 }
-                const dbPost = await postService.updatePost({
+                const dbPost = await postService.UpdatePost({
                     ...data,
                     slug: post.$id,
                     featuredImage: file ? file.$id : undefined,
@@ -45,7 +46,7 @@ export default function PostForm({ post }) {
                 }
             }
             else {
-                const file = await postService.uploadFile(data.image[0])
+                const file = await postService.uploadfile(data.image[0])
 
                 if (file) {
                     const fileId = file.$id
@@ -112,7 +113,7 @@ export default function PostForm({ post }) {
                     })}
                     error={!!errors.title}
                     helperText={errors.title?.message}
-                    onInput={(e) => {
+                    onChange={(e) => {
                         const Slugvalue = slugTransform(e.currentTarget.value)
                         setValue("slug", Slugvalue, { shouldValidate: true })
                     }}
@@ -125,19 +126,17 @@ export default function PostForm({ post }) {
                     label="slug"
                     fullWidth
                     sx={{ mb: 2 }}
-                    {...register("slug", {
-                        required: "slug is required",
-
-                    })}
-                    error={!!errors.slug}
-                    helperText={errors.slug?.message}
-                    onInput={(e) => {
+                    {...register("slug")}
+                     value={slug || ""}  
+                    
+                
+                    onChange={(e) => {
                         setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true })
 
                     }}
 
                 />
-                <RTE control={control} name="content" defaultValues={getValue("content")} label="content" />
+                <RTE control={control} name="content" defaultValues={getValues("content")} label="content" />
 
             </Box>
 
@@ -145,7 +144,6 @@ export default function PostForm({ post }) {
                 <TextField
                     id="outlined-basic"
                     type="file"
-                    label="Enter Image"
                     sx={{ mb: 4 }}
                     accept="image/png, image/jpg, image/jpeg, image/gif"
                     {...register("image", {
@@ -187,7 +185,7 @@ export default function PostForm({ post }) {
                     )}
                 />
                 <Button type="submit"
-                    variant={post ? "contained" : "outlined"}
+                    
                     disabled={isSubmitting}
                     sx={{
                         bgcolor: post ? "primary.main" : "green",
@@ -195,6 +193,7 @@ export default function PostForm({ post }) {
                         "&:hover": {
                             bgcolor: post ? "primary.dark" : "darkgreen",
                         },
+                        mt:2
                     }}
 
                 >
