@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { RTE } from "../RTE";
 import postService from "../../Appwrite/posts/api";
-import { Box, TextField, InputLabel, MenuItem, FormControl, Select } from "@mui/material";
+import { Box, TextField, InputLabel, MenuItem, FormControl, Select, Button } from "@mui/material";
 import { Controller } from "react-hook-form";
 
 
@@ -186,6 +186,21 @@ export default function PostForm({ post }) {
 
                     )}
                 />
+                <Button type="submit"
+                    variant={post ? "contained" : "outlined"}
+                    disabled={isSubmitting}
+                    sx={{
+                        bgcolor: post ? "primary.main" : "green",
+                        color: "white",
+                        "&:hover": {
+                            bgcolor: post ? "primary.dark" : "darkgreen",
+                        },
+                    }}
+
+                >
+                     {isSubmitting ? "Processing..." : post ? "Update" : "Submit"}
+
+                </Button>
 
 
 
