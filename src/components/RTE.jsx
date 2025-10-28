@@ -7,11 +7,12 @@ export default function RTE({ control, name, defaultValue = "", label }) {
         <>
             {label &&
                 <Box
-                    component="label"
+                    
                     sx={{
                         display: "inline-block",
                         mb: 1,
-                        pl: 1
+                        pl: 1,
+                        color:"gray"
 
 
                     }}
