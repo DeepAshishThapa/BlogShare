@@ -30,16 +30,16 @@ export default function PostForm({ post }) {
 
         try {
             if (post) {
-                const file = data.image[0] ? await postService.uploadfile(data.image[0]) : null;
+                const file = data.image?.[0]?  await postService.uploadfile(data.image[0]) : null;
 
                 if (file) {
                     postService.deletefile(post.featuredImage)
 
-                }
+                }   
                 const dbPost = await postService.UpdatePost({
                     ...data,
                     slug: post.$id,
-                    featuredImage: file ? file.$id : undefined,
+                    featuredImage: file ? file.$id : post.featuredImage,
                 })
                 if (dbPost) {
                     navigate(`/post/${dbPost.$id}`)
@@ -136,7 +136,7 @@ export default function PostForm({ post }) {
                     }}
 
                 />
-                <RTE control={control} name="content" defaultValues={getValues("content")} label="content" />
+                <RTE control={control} name="content" defaultValues={getValues("content")} label="content:" />
 
             </Box>
 
