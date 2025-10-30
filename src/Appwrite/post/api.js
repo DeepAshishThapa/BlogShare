@@ -146,7 +146,7 @@ export class PostService {
 
     async getfilepreview(fileId) {
 
-        const u = this.storage.getFilePreview({
+        const u = await this.storage.getFileView({
             bucketId: config.appwriteBucketId,
             fileId,
         });
