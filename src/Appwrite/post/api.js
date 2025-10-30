@@ -1,4 +1,4 @@
-import { Client, TablesDB, ID, Storage, Query} from "appwrite";
+import { Client, TablesDB, ID, Storage, Query } from "appwrite";
 import config from "../../config/config";
 
 export class PostService {
@@ -28,7 +28,7 @@ export class PostService {
                     content,
                     featuredImage,
                     status,
-                    userId
+                    userid: userId
 
                 }
 
@@ -43,7 +43,7 @@ export class PostService {
     }
     async UpdatePost({ slug, title, content, featuredImage, status }) {
         try {
-            return await this.tablesDB.createRow({
+            return await this.tablesDB.updateRow({
                 databaseId: config.appwriteDatabaseId,
                 tableId: config.appwriteTableId,
                 rowId: slug,
@@ -52,7 +52,7 @@ export class PostService {
                     content,
                     featuredImage,
                     status,
-                    
+
 
                 }
 
@@ -68,8 +68,8 @@ export class PostService {
 
     async deletepost(slug) {
         try {
-            response = await this.tablesDB.deleteRow({
-                databseId: config.appwriteDatabaseId,
+            const response = await this.tablesDB.deleteRow({
+                databaseId: config.appwriteDatabaseId,
                 tableId: config.appwriteTableId,
                 rowId: slug
 
@@ -85,7 +85,7 @@ export class PostService {
     async getpost(slug) {
         try {
             return await this.tablesDB.getRow({
-                databseId: config.appwriteDatabaseId,
+                databaseId: config.appwriteDatabaseId,
                 tableId: config.appwriteTableId,
                 rowId: slug,
 
@@ -131,7 +131,7 @@ export class PostService {
 
     async deletefile(fileId) {
         try {
-            result = await this.storage.deleteFile({
+            const result = await this.storage.deleteFile({
                 bucketId: config.appwriteBucketId,
                 fileId
 
@@ -140,22 +140,21 @@ export class PostService {
             return true
         }
         catch (error) {
-            consolelog("Appwrite error", error)
+            console.log("Appwrite error", error)
         }
     }
 
-    async getfilepreview(fileId){
-        try{
-            return await this.storage.getfilepreview({
-                 bucketId: config.appwriteBucketId,
-                fileId
-            })
+    async getfilepreview(fileId) {
 
-        }
-        catch(error){
+        const u = this.storage.getFilePreview({
+            bucketId: config.appwriteBucketId,
+            fileId,
+        });
+        // normalize to plain string
+        return typeof u === "string" ? u : u?.href || u?.toString() || "";
 
-        }
+
     }
 }
-const postService=new PostService();
+const postService = new PostService();
 export default postService
