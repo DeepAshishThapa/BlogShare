@@ -6,7 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import postService from '../../Appwrite/post/api';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 export default function MediaCard({ post }) {
   const [imgUrl, setImgUrl] = useState("");
 
@@ -21,10 +21,23 @@ export default function MediaCard({ post }) {
 
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card
+      elevation={8}
+      sx={{
+        maxWidth: '100%',
+        mb: 10,
+        px: 1,
+        py:2
+
+
+      }}>
       <CardMedia
         component="img"
-        sx={{ height: 140 }}
+        sx={{
+          height: 350,
+          objectFit: 'cover',
+
+        }}
         image={imgUrl}
         title="green iguana"
       />
