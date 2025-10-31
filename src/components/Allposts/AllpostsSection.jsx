@@ -1,7 +1,8 @@
 import React from 'react'
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import postService from '../../Appwrite/post/api.js'
 import MediaCard from '../card/Card.jsx';
+import { Container } from '@mui/material';
 
 
 function AllpostsSection() {
@@ -18,15 +19,21 @@ function AllpostsSection() {
     }, []);
     return (
         <>
-            {posts && posts.length > 0 ? (
-                posts.map((post) => (
-                    <MediaCard key={post.$id} post={post} />
-                ))
+            <Container maxWidth="md"
+            sx={{
+                mt:10
+            }}
+            >
+                {posts && posts.length > 0 ? (
+                    posts.map((post) => (
+                        <MediaCard key={post.$id} post={post} />
+                    ))
 
-            ) : (
-                <div>NO POSTS FOUND</div>
+                ) : (
+                    <div>NO POSTS FOUND</div>
 
-            )}
+                )}
+            </Container>
 
 
         </>
