@@ -15,7 +15,7 @@ export default function PostForm({ post }) {
         {
             defaultValues: {
                 title: post?.title || "",
-                slug: post?.slug || "",
+                slug: post?.$id || "",
                 content: post?.content || "",
                 status: post?.status || "active"
             }
@@ -127,7 +127,7 @@ export default function PostForm({ post }) {
                     fullWidth
                     sx={{ mb: 2 }}
                     {...register("slug")}
-                     value={slug || ""}  
+                    //  value={slug || ""}  
                     
                 
                     onChange={(e) => {
@@ -136,7 +136,7 @@ export default function PostForm({ post }) {
                     }}
 
                 />
-                <RTE control={control} name="content" defaultValues={getValues("content")} label="content:" />
+                <RTE control={control} name="content" defaultValue={getValues("content")} label="content:" />
 
             </Box>
 
