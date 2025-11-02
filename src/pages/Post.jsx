@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router'
 import parse from "html-react-parser"
 import { useSelector } from 'react-redux'
 import { Container, Box } from '@mui/material'
-
+import { Button } from '@mui/material'
 
 
 
@@ -14,11 +14,11 @@ function Post() {
     const { slug } = useParams()
     const [post, setpost] = useState(null)
     const navigate = useNavigate()
-    const [imgUrl, setImgUrl] = useState('')
+    const [imgUrl, setImgUrl] = useState(null)
 
     const userData = useSelector((state) => state.auth.userData)
 
-    const isAuthor = post && userData ? post.userId === userData.$id : false;
+    const isAuthor = post && userData ? post.userid === userData.$id : false;
 
     useEffect(() => {
         if (slug) {
@@ -69,47 +69,78 @@ function Post() {
 
     return post ? (
         <>
-            <Container maxWidth="md"
+
+
+            <Box
                 sx={{
-                    py: 8,
-                    display: "flex",
-                    flexDirection: 'column',
-                    gap: 10,
+
+                    color: 'white',
+                    py: { xs: 5, sm: 5 },
 
                 }}
             >
-                <Box
-                    component="img"
-                    src={imgUrl}
-                    alt={post.title}
+                <Container maxWidth="md"
+                    sx={{
+                        py: 5,
+                        display: "flex",
+                        flexDirection: 'column',
+                        gap: 10,
+                        position: 'relative'
+
+                    }}
                 >
+                    {isAuthor &&
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                right: '2.8%',
+                                top: 0,
+                                zIndex: 2,
+                            }}
+                        >
+                            <Link to={`/edit-post/${post.$id}`}>
+                                <Button sx={{ backgroundColor: '#1d0a3d', color:'white'}}>
+                                    Edit
+
+                                </Button>
+                            </Link>
+
+
+                        </Box>
+                    }
+                    <Box
+                        component="img"
+                        src={imgUrl}
+                        alt={post.title}
+                    >
 
 
 
-                </Box>
-                <Box
-                sx={{
-                    display:"flex",
-                    flexDirection:"column",
-                }}
-                >
+                    </Box>
                     <Box
                         sx={{
-                            fontSize: '2.5rem',
-                            fontWeight: 1000,
+                            display: "flex",
+                            flexDirection: "column",
                             color: 'text.primary'
                         }}
                     >
-                        {post.title}
+                        <Box
+                            sx={{
+                                fontSize: '2.5rem',
+                                fontWeight: 1000,
+                                
+                            }}
+                        >
+                            {post.title}
+                        </Box>
+                        <Box>
+                            {parse(post.content)}
+                        </Box>
                     </Box>
-                    <Box>
-                        {parse(post.content)}
-                    </Box>
-                </Box>
 
-            </Container>
+                </Container>
 
-
+            </Box>
         </>
     ) : null
 }
