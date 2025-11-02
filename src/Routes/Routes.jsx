@@ -5,6 +5,7 @@ import Signuppage from "@/pages/Signuppage";
 import Allposts from "@/pages/Allposts";
 import Addposts from "@/pages/Addposts";
 import Editpost from "@/pages/Editpost";
+import Post from "@/pages/Post";
 
 
 import Homepage from "@/pages/Homepage";
@@ -20,7 +21,7 @@ function AppRoutes() {
            <Route path="all-posts" element={<Allposts/>}/>
            <Route path="add-posts" element={<Addposts/>}/>
            <Route path="edit-post/:slug" element={<Editpost/>}/>
-           {/* <Route path="post/:slug" element={<Post/>}/> */}
+           <Route path="post/:slug" element={<Post/>}/>
 
 
         </Route>
