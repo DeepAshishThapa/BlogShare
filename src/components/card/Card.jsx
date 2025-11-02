@@ -7,9 +7,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import postService from '../../Appwrite/post/api';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import parse from 'html-react-parser';
 export default function MediaCard({ post }) {
   const [imgUrl, setImgUrl] = useState("");
+  const navigate=useNavigate()
 
   useEffect(() => {
     let cancelled = false;
@@ -55,12 +57,18 @@ export default function MediaCard({ post }) {
             WebkitLineClamp: 3,
 
           }}>
-            {parse(post.content || '')}
+          {parse(post.content || '')}
         </Typography>
       </CardContent>
       <CardActions>
 
-        <Button size="small" sx={{backgroundColor:"#1d0a3d", color:'white'}}>Learn More</Button>
+        <Button 
+        size="small" 
+        sx={{ backgroundColor: "#1d0a3d", color: 'white' }}
+        onClick={()=>{navigate(`/post/${post.$id}`)}}
+        >
+          Learn More
+        </Button>
       </CardActions>
     </Card>
   );
