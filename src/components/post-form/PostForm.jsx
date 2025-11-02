@@ -41,9 +41,9 @@ export default function PostForm({ post }) {
                     slug: post.$id,
                     featuredImage: file ? file.$id : post?.featuredImage,
                 })
-                // if (dbPost) {
-                //     navigate(`/post/${dbPost.$id}`)
-                // }
+                if (dbPost) {
+                    navigate(`/post/${dbPost.$id}`)
+                }
             }
             else {
                 const file = await postService.uploadfile(data.image[0])
@@ -56,9 +56,9 @@ export default function PostForm({ post }) {
                         userId: userData.$id
 
                     })
-                    // if (dbPost) {
-                    //     navigate(`/post/${dbPost.$id}`)
-                    // }
+                    if (dbPost) {
+                        navigate(`/post/${dbPost.$id}`)
+                    }
                 }
 
             }
