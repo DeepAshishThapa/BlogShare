@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import { Controller } from "react-hook-form";
 
-export default function RTE({ control, name, defaultValue = "", label }) {
+export default function RTE({ control, name, defaultValue = [defaultValue], label }) {
     return (
         <>
             {label &&
@@ -50,7 +50,8 @@ export default function RTE({ control, name, defaultValue = "", label }) {
                             ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
                             uploadcare_public_key: '78450930a6481309eaa3',
                         }}
-                        initialValue="Anything in your mind?"
+                        
+                        
                     />
                 )}
             />
