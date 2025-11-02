@@ -39,11 +39,11 @@ export default function PostForm({ post }) {
                 const dbPost = await postService.UpdatePost({
                     ...data,
                     slug: post.$id,
-                    featuredImage: file ? file.$id : post.featuredImage,
+                    featuredImage: file ? file.$id : post?.featuredImage,
                 })
-                if (dbPost) {
-                    navigate(`/post/${dbPost.$id}`)
-                }
+                // if (dbPost) {
+                //     navigate(`/post/${dbPost.$id}`)
+                // }
             }
             else {
                 const file = await postService.uploadfile(data.image[0])
@@ -51,14 +51,14 @@ export default function PostForm({ post }) {
                 if (file) {
                     const fileId = file.$id
                     data.featuredImage = fileId
-                    const dbPost = await postService.createFile({
+                    const dbPost = await postService.CreatePost({
                         ...data,
                         userId: userData.$id
 
                     })
-                    if (dbPost) {
-                        navigate(`/post/${dbPost.$id}`)
-                    }
+                    // if (dbPost) {
+                    //     navigate(`/post/${dbPost.$id}`)
+                    // }
                 }
 
             }
@@ -155,7 +155,7 @@ export default function PostForm({ post }) {
                 {post && (
                     <Box
                         component="img"
-                        src={postService.getfilepreview(post.featuredImage)}
+                        src={post?.featuredImage ? postService.getfilepreview(post.featuredImage) : ""}
                         sx={{
                             width: "100%",
                             mb: 4
