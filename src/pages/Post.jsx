@@ -14,7 +14,7 @@ function Post() {
     const { slug } = useParams()
     const [post, setpost] = useState(null)
     const navigate = useNavigate()
-    const [imgUrl, setImgUrl] = useState('')    
+    const [imgUrl, setImgUrl] = useState('')
 
     const userData = useSelector((state) => state.auth.userData)
 
@@ -69,7 +69,15 @@ function Post() {
 
     return post ? (
         <>
-            <Container maxWidth="md">
+            <Container maxWidth="md"
+                sx={{
+                    py: 8,
+                    display: "flex",
+                    flexDirection: 'column',
+                    gap: 10,
+
+                }}
+            >
                 <Box
                     component="img"
                     src={imgUrl}
@@ -79,12 +87,23 @@ function Post() {
 
 
                 </Box>
-                <Box>
-                    <Box>
+                <Box
+                sx={{
+                    display:"flex",
+                    flexDirection:"column",
+                }}
+                >
+                    <Box
+                        sx={{
+                            fontSize: '2.5rem',
+                            fontWeight: 1000,
+                            color: 'text.primary'
+                        }}
+                    >
                         {post.title}
                     </Box>
                     <Box>
-                       { parse(post.content)}
+                        {parse(post.content)}
                     </Box>
                 </Box>
 
