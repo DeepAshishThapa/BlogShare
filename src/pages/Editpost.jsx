@@ -1,6 +1,7 @@
 import React from 'react'
 import PostForm from '@/components/post-form/PostForm'
-import { useState } from 'react'
+import { Box } from '@mui/material'
+import { useState,useEffect} from 'react'
 import { useNavigate, useParams } from 'react-router'
 import postService from '@/Appwrite/post/api'
 
