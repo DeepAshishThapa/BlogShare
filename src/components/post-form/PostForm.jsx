@@ -1,8 +1,9 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import  RTE  from "../RTE";
+
+import RTE from "../RTE";
 import postService from "../../Appwrite/post/api";
 import { Box, TextField, InputLabel, MenuItem, FormControl, Select, Button } from "@mui/material";
 import { Controller } from "react-hook-form";
@@ -11,7 +12,7 @@ import { Controller } from "react-hook-form";
 
 export default function PostForm({ post }) {
 
-    const { control, register, handleSubmit, setValue,getValues, formState: { errors, isSubmitting },watch } = useForm(
+    const { control, register, handleSubmit, setValue, getValues, formState: { errors, isSubmitting }, watch } = useForm(
         {
             defaultValues: {
                 title: post?.title || "",
@@ -26,16 +27,38 @@ export default function PostForm({ post }) {
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData)
 
+    const [imgUrl, setImgUrl] = useState("");
+
+    useEffect(() => {
+        let alive = true;
+        (async () => {
+            try {
+                if (post?.featuredImage) {
+                    const url = await postService.getfilepreview(post.featuredImage);
+                    if (alive) setImgUrl(url || "");
+                } else {
+                    if (alive) setImgUrl("");
+                }
+            } catch (e) {
+                console.error("preview error:", e);
+                if (alive) setImgUrl("");
+            }
+        })();
+        return () => {
+            alive = false;
+        };
+    }, [post?.featuredImage]);
+
     const onSubmit = useCallback(async (data) => {
 
         try {
             if (post) {
-                const file = data.image?.[0]?  await postService.uploadfile(data.image[0]) : null;
+                const file = data.image?.[0] ? await postService.uploadfile(data.image[0]) : null;
 
                 if (file) {
                     postService.deletefile(post.featuredImage)
 
-                }   
+                }
                 const dbPost = await postService.UpdatePost({
                     ...data,
                     slug: post.$id,
@@ -101,7 +124,7 @@ export default function PostForm({ post }) {
                 flexWrap: "wrap",
             }}
         >
-            <Box sx={{ flexGrow: 2,flexBasis: '500px', px: 2 }}>
+            <Box sx={{ flexGrow: 2, flexBasis: '500px', px: 2 }}>
                 <TextField
                     id="outlined-basic"
                     label="Title"
@@ -127,9 +150,9 @@ export default function PostForm({ post }) {
                     fullWidth
                     sx={{ mb: 2 }}
                     {...register("slug")}
-                    //  value={slug || ""}  
-                    
-                
+                     value={slug || ""}  
+
+
                     onChange={(e) => {
                         setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true })
 
@@ -140,22 +163,30 @@ export default function PostForm({ post }) {
 
             </Box>
 
-            <Box sx={{ flexGrow: 1,flexBasis: '250px', px: 2 }} >
+            <Box sx={{ flexGrow: 1, flexBasis: '250px', px: 2 }} >
                 <TextField
                     id="outlined-basic"
                     type="file"
                     sx={{ mb: 4 }}
                     accept="image/png, image/jpg, image/jpeg, image/gif"
                     {...register("image", {
-                        required: !post ? "Image is required" : false
+                        required: !post ? "Image is required" : false,
+                        onChange: (e) => {
+                            if (e.target.files && e.target.files.length > 0) {
+                                setImgUrl("");
+                            } else {
+                                if (post?.featuredImage) setImgUrl(imgUrl);
+                            }
+                        },
                     })}
+
                     error={!!errors.image}
                     helperText={errors.image?.message}
                 />
-                {post && (
+                {post && imgUrl && (
                     <Box
                         component="img"
-                        src={post?.featuredImage ? postService.getfilepreview(post.featuredImage) : ""}
+                        src={imgUrl}
                         sx={{
                             width: "100%",
                             mb: 4
@@ -187,7 +218,7 @@ export default function PostForm({ post }) {
                     )}
                 />
                 <Button type="submit"
-                    
+
                     disabled={isSubmitting}
                     sx={{
                         bgcolor: post ? "primary.main" : "green",
@@ -195,11 +226,11 @@ export default function PostForm({ post }) {
                         "&:hover": {
                             bgcolor: post ? "primary.dark" : "darkgreen",
                         },
-                        mt:2
+                        mt: 2
                     }}
 
                 >
-                     {isSubmitting ? "Processing..." : post ? "Update" : "Submit"}
+                    {isSubmitting ? "Processing..." : post ? "Update" : "Submit"}
 
                 </Button>
 
