@@ -54,7 +54,7 @@ function Post() {
         postService.deletepost(slug).then((status) => {
             if (status) {
                 postService.deletefile(post.featuredImage)
-                navigate("/")
+                navigate("/all-posts")
             }
         })
 
@@ -96,6 +96,8 @@ function Post() {
                                 right: '2.8%',
                                 top: 0,
                                 zIndex: 2,
+                                display:'flex',
+                                gap:1.5
                             }}
                         >
                             <Link to={`/edit-post/${post.$id}`}>
@@ -104,6 +106,15 @@ function Post() {
 
                                 </Button>
                             </Link>
+                            <Button variant="contained" color="error"
+                                  onClick={()=>{
+                                    deletepost()
+
+                                  }}
+                            >
+                                Delete
+
+                            </Button>
 
 
                         </Box>
