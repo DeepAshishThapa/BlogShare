@@ -150,7 +150,7 @@ export default function PostForm({ post }) {
                     fullWidth
                     sx={{ mb: 2 }}
                     {...register("slug")}
-                     value={slug || ""}  
+                    value={slug || ""}
 
 
                     onChange={(e) => {
@@ -217,22 +217,35 @@ export default function PostForm({ post }) {
 
                     )}
                 />
-                <Button type="submit"
-
-                    disabled={isSubmitting}
-                    sx={{
-                        bgcolor: post ? "primary.main" : "green",
-                        color: "white",
-                        "&:hover": {
-                            bgcolor: post ? "primary.dark" : "darkgreen",
-                        },
-                        mt: 2
-                    }}
-
+                <Box
+                  sx={{
+                    display:"flex",
+                    alignItems: "center",
+                    gap:2,
+                    mt:2
+                    
+                  }} 
                 >
-                    {isSubmitting ? "Processing..." : post ? "Update" : "Submit"}
+                    <Button type="submit"
 
-                </Button>
+                        disabled={isSubmitting}
+                        sx={{
+                            bgcolor: ' #1d0a3d',
+                            color: "white",
+                            "&:hover": {
+                                bgcolor: "black"
+                            },
+                           
+                        }}
+
+                    >
+                        {isSubmitting ? "Processing..." : post ? "Update" : "Submit"}
+
+                    </Button>
+                    <Button variant="contained" color="error">
+                        Cancel
+                    </Button>
+                </Box>
 
 
 
