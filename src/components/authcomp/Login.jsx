@@ -52,7 +52,7 @@ function Login() {
             dispatch(login(userData))
             setSuccessMsg("Login successful!");
             setOpenSuccess(true)
-            setTimeout(() => navigate("/all-posts"), 1500);
+            setTimeout(() => navigate("/all-posts"), 1200);
 
         }
         catch (error) {
