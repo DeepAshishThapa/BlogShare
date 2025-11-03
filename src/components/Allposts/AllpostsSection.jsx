@@ -2,11 +2,13 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import postService from '../../Appwrite/post/api.js'
 import MediaCard from '../card/Card.jsx';
-import { Container } from '@mui/material';
+import { Container, Box, CircularProgress } from '@mui/material';
 
 
 function AllpostsSection() {
     const [posts, setPosts] = useState([])
+    const [loading, setloading] = useState(true)
+
     useEffect(() => {
         postService.getposts()
             .then((res) => {
@@ -15,24 +17,34 @@ function AllpostsSection() {
                     setPosts(res.rows);
                 }
             })
+            .finally(() => setloading(false))
 
     }, []);
     return (
         <>
-            <Container maxWidth="md"
-            sx={{
-                mt:10
-            }}
-            >
-                {posts && posts.length > 0 ? (
-                    posts.map((post) => (
-                        <MediaCard key={post.$id} post={post} />
-                    ))
+            <Container maxWidth="md" sx={{ mt: 10 }}>
+                {
+                    loading ? (
+                        <Box sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '60vh',
+                        }}>
+                            <CircularProgress />
 
-                ) : (
-                    <div>NO POSTS FOUND</div>
 
-                )}
+                        </Box>
+
+
+                    ) : posts && posts.length > 0 ? (
+                        posts.map((post) => (
+                            <MediaCard key={post.$id} post={post} />
+                        ))
+                    ) : (
+                        <div>NO POSTS FOUND</div>
+                    )
+                }
             </Container>
 
 
