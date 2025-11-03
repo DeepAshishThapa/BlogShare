@@ -10,6 +10,7 @@ import { Controller } from "react-hook-form";
 
 
 
+
 export default function PostForm({ post }) {
 
     const { control, register, handleSubmit, setValue, getValues, formState: { errors, isSubmitting }, watch } = useForm(
@@ -218,31 +219,38 @@ export default function PostForm({ post }) {
                     )}
                 />
                 <Box
-                  sx={{
-                    display:"flex",
-                    alignItems: "center",
-                    gap:2,
-                    mt:2
-                    
-                  }} 
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 2,
+                        mt: 2
+
+                    }}
                 >
                     <Button type="submit"
 
                         disabled={isSubmitting}
                         sx={{
-                            bgcolor: ' #1d0a3d',
-                            color: "white",
+                            bgcolor: isSubmitting ? "grey" : "#1d0a3d",   // 👈 change color while submitting
+                            color: isSubmitting ? "black" : "white",
                             "&:hover": {
-                                bgcolor: "black"
+                                bgcolor: "black",
+
                             },
                            
+
+
                         }}
 
                     >
                         {isSubmitting ? "Processing..." : post ? "Update" : "Submit"}
 
                     </Button>
-                    <Button variant="contained" color="error">
+                    <Button variant="contained" color="error"
+                        onClick={() => {
+                            post ? navigate(`/post/${post.$id}`) : navigate("/all-posts")
+                        }}
+                    >
                         Cancel
                     </Button>
                 </Box>
