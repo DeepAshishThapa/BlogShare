@@ -21,7 +21,7 @@ import { useNavigate, NavLink } from "react-router";
 
 
 import authService from '@/Appwrite/auth/auth';
-import { login, logout } from "../../Appwrite/auth/authSlice.js"
+import { logout } from "../../Appwrite/auth/authSlice.js"
 import { useDispatch } from 'react-redux';
 
 
@@ -29,8 +29,12 @@ import { useDispatch } from 'react-redux';
 function ResponsiveAppBar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  //  Check if user is logged in (from Redux state)
   const authStatus = useSelector((state) => state.auth.status)
 
+
+  //  Page links shown in the navbar
   const pages = [
     { name: "Home", slug: "/", active: true },
     { name: "All Posts", slug: "/all-posts", active: true },
@@ -38,6 +42,7 @@ function ResponsiveAppBar() {
   ];
 
 
+  //  Auth-related actions (login/signup/logout)
   const authitems = [
     { name: "Login", slug: "/login", active: !authStatus },
     { name: "Signup", slug: "/signup", active: !authStatus },
@@ -45,7 +50,9 @@ function ResponsiveAppBar() {
   ]
 
 
+  //  State for controlling mobile dropdown menu
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -56,29 +63,24 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
-
+  
+   //  Logout handler — calls Appwrite service, clears Redux user, and redirects
   const handlelogout = async () => {
     try {
       await authService.logout()
       dispatch(logout())
 
-
-
     } catch (error) {
       console.log(error)
-
 
     }
     finally {
       navigate("/");
     }
-
-
   }
 
   return (
     <AppBar position="fixed"
-
       sx={{
         backgroundImage: 'linear-gradient(to right, #0a1f44 0%, #1d3989 70%)',
         bgcolor: 'transparent',
@@ -87,6 +89,8 @@ function ResponsiveAppBar() {
 
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+
+           {/*  Logo shown on desktop */}
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -119,6 +123,8 @@ function ResponsiveAppBar() {
             >
               <MenuIcon />
             </IconButton>
+
+            {/* Dropdown Menu for mobile view */}
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -153,7 +159,7 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
 
-
+          {/* Logo for small screens */}
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -181,7 +187,7 @@ function ResponsiveAppBar() {
                 key={page.slug}
                 to={page.slug}
                 style={({ isActive }) => ({
-                  color: isActive ? "#6d96bf" : "white", // 🔥 highlight active link
+                  color: isActive ? "#6d96bf" : "white", //  highlight active link
                   textDecoration: "none",
 
                 })}
@@ -198,7 +204,7 @@ function ResponsiveAppBar() {
               (authitem.name === "Logout" ? (
                 <Button
                   key={authitem.slug}
-                  onClick={handlelogout}   // 👈 use handler instead of NavLink
+                  onClick={handlelogout}   //  use handler instead of NavLink
                   sx={{ color: "white" }}
                 >
                   {authitem.name}
