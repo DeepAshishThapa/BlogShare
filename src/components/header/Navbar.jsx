@@ -1,21 +1,24 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Button,
+  MenuItem,
+
+} from '@mui/material';
+
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-
-import Button from '@mui/material/Button';
-
-import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+
 import { useSelector } from 'react-redux';
 
-import { useNavigate } from "react-router";
-import { NavLink } from 'react-router';
+import { useNavigate, NavLink } from "react-router";
+
 
 import authService from '@/Appwrite/auth/auth';
 import { login, logout } from "../../Appwrite/auth/authSlice.js"
@@ -23,75 +26,34 @@ import { useDispatch } from 'react-redux';
 
 
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
-
-
-
 function ResponsiveAppBar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const authStatus = useSelector((state) => state.auth.status)
-  const pages = [{
-    name: 'Home',
-    slug: '/',
-    active: true
-  },
 
-  {
-    name: "All Posts",
-    slug: "/all-posts",
-    active: true
-  },
-  {
-    name: "Add Posts",
-    slug: "/add-posts",
-    active: authStatus
-  },
-
+  const pages = [
+    { name: "Home", slug: "/", active: true },
+    { name: "All Posts", slug: "/all-posts", active: true },
+    { name: "Add Posts", slug: "/add-posts", active: authStatus },
   ];
+
+
   const authitems = [
-    {
-      name: "Login",
-      slug: "/login",
-      active: !authStatus
-
-    },
-    {
-      name: "Signup",
-      slug: "/signup",
-      active: !authStatus
-
-    },
-    {
-      name: "Logout",
-      slug: "/",
-      active: authStatus
-    }
-
-
+    { name: "Login", slug: "/login", active: !authStatus },
+    { name: "Signup", slug: "/signup", active: !authStatus },
+    { name: "Logout", slug: "/", active: authStatus },
   ]
 
 
-
-
-
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
 
@@ -141,9 +103,11 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            BSHARE
+            TNEST
           </Typography>
 
+
+          {/* Mobile menu */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -188,6 +152,8 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
+
+
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -205,8 +171,10 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            TNEST
           </Typography>
+
+          {/* Desktop menu */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: 5, ml: 5 }}>
             {pages.map((page) => (
               <NavLink
@@ -222,6 +190,8 @@ function ResponsiveAppBar() {
               </NavLink>
             ))}
           </Box>
+
+          {/* Auth actions */}
           <Box sx={{ flexGrow: 0 }}>
             {authitems.map((authitem) =>
               authitem.active &&
