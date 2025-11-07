@@ -5,14 +5,23 @@ import MediaCard from '../card/Card.jsx';
 import { Container, Box, CircularProgress } from '@mui/material';
 
 
+/**
+ * AllpostsSection Component
+ * ----------------------------------
+ * This component fetches and displays all posts from the Appwrite database.
+ * It shows a loading spinner while fetching and a list of MediaCard components when done.
+ */
 function AllpostsSection() {
-    const [posts, setPosts] = useState([])
-    const [loading, setloading] = useState(true)
 
+    const [posts, setPosts] = useState([])             // Stores all fetched posts
+    const [loading, setloading] = useState(true)        // Controls the loading spinner visibility
+
+
+
+    // ---------- Fetch posts on component mount ----------
     useEffect(() => {
         postService.getposts()
             .then((res) => {
-                console.log("Fetched posts:", res);
                 if (res && res.rows) {
                     setPosts(res.rows);
                 }
@@ -20,6 +29,7 @@ function AllpostsSection() {
             .finally(() => setloading(false))
 
     }, []);
+    
     return (
         <>
             <Container maxWidth="md" sx={{ mt: 10 }}>
