@@ -14,6 +14,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Snackbar,
+  Alert,
 
 } from '@mui/material';
 
@@ -61,6 +63,23 @@ function ResponsiveAppBar() {
   const handleCloseNavMenu = () => setAnchorElNav(null);
 
 
+  // Snackbar for “need to log in”
+  const [openSnack, setOpenSnack] = React.useState(false);
+  const handleCloseSnack = () => setOpenSnack(false);
+
+
+  // Block navigation to /add-posts when logged out, show snackbar in-place
+  const handleProtectedNav = (e, slug) => {
+    if (slug === "/add-posts" && !authStatus) {
+      e.preventDefault();       // stop navigation
+      setOpenSnack(true);       // show hint on the CURRENT page (navbar is global)
+      setAnchorElNav(null);     // close mobile menu
+    } else {
+      setAnchorElNav(null);
+    }
+  };
+
+
   //  Logout confirmation dialog state
   const [openLogoutDialog, setOpenLogoutDialog] = React.useState(false);
   const handleOpenLogoutDialog = () => setOpenLogoutDialog(true);
@@ -70,7 +89,7 @@ function ResponsiveAppBar() {
 
   //  Logout handler — calls Appwrite service, clears Redux user, and redirects
   const handlelogout = async () => {
-    setOpenLogoutDialog(false); 
+    setOpenLogoutDialog(false);
     try {
       await authService.logout()
       dispatch(logout())
@@ -152,6 +171,7 @@ function ResponsiveAppBar() {
                     <NavLink
                       key={page.slug}
                       to={page.slug}
+                      onClick={(e) => handleProtectedNav(e, page.slug)}
                       style={({ isActive }) => ({
                         color: isActive ? "#6d96bf" : "black", // 🔥 highlight active link
                         textDecoration: "none",
@@ -192,6 +212,7 @@ function ResponsiveAppBar() {
                 <NavLink
                   key={page.slug}
                   to={page.slug}
+                  onClick={(e) => handleProtectedNav(e, page.slug)}
                   style={({ isActive }) => ({
                     color: isActive ? "#6d96bf" : "white", //  highlight active link
                     textDecoration: "none",
@@ -260,6 +281,19 @@ function ResponsiveAppBar() {
           </Button>
         </DialogActions>
       </Dialog>
+
+
+      {/* Snackbar: shows on the CURRENT page (e.g., All Posts) when Add Posts is blocked */}
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={2500}
+        onClose={handleCloseSnack}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={handleCloseSnack} severity="info" variant="filled" sx={{ width: "100%" }}>
+          Please log in to add a post.
+        </Alert>
+      </Snackbar>
     </>
 
 
