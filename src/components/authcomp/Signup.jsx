@@ -12,18 +12,35 @@ import { InputAdornment, IconButton } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+/**
+ * Signup Component
+ * --------------------------------------------------------
+ * Allows new users to register an account using Appwrite.
+ * Includes:
+ *  - Form validation (name, email, password, confirm password)
+ *  - Password visibility toggle
+ *  - Success & error Snackbars
+ *  - Automatic login + redirect after signup
+ */
+
 
 function Signup() {
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate()
-
-    const [showPassword, setShowPassword] = useState(false);
+    // ---------- Redux & Router ----------
+    const dispatch = useDispatch();             // Dispatch Redux actions
+    const navigate = useNavigate()              // Navigate after signup
 
 
+    const [showPassword, setShowPassword] = useState(false);  // Toggle password visibility
 
- 
 
+    // Snackbar states (for success / error feedback)
+    const [Error, setError] = useState("")
+    const [openError, setopenError] = useState(false)
+    const [successMsg, setSuccessMsg] = useState("");
+    const [openSuccess, setOpenSuccess] = useState(false);
+
+
+    // ---------- React Hook Form Setup ----------
     const {
         register,
         handleSubmit,
@@ -31,17 +48,13 @@ function Signup() {
         formState: { errors, isSubmitting },
     } = useForm()
 
+
+    // Watch password field to validate confirm password
     const pwd = watch("password")
 
 
 
-    const [Error, setError] = useState("")
-    const [openError, setopenError] = useState(false)
-
-    const [successMsg, setSuccessMsg] = useState("");
-    const [openSuccess, setOpenSuccess] = useState(false);
-
-
+    // ---------- Snackbar Handlers ----------
     const handleCloseError = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -57,22 +70,32 @@ function Signup() {
     };
 
 
+
+    // ---------- Form Submit Handler ----------
     const onSubmit = async (data) => {
 
         try {
+            // Remove confirmPassword before sending to API
             const { confirmPassword, ...formData } = data;
+
+            // Create account using Appwrite
             const userData = await authService.createAccount(formData)
 
+            // Automatically log user in and update Redux state
             dispatch(login(userData));
+
+            // Show success message
             setSuccessMsg("Signup successful!");
             setOpenSuccess(true)
+
+            // Redirect to homepage after short delay
             setTimeout(() => navigate("/"), 1500);
 
 
         }
 
         catch (error) {
-            console.log(error)
+
             setError(error.message)
             setopenError(true)
         }
@@ -80,6 +103,7 @@ function Signup() {
     }
     return (
         <div>
+            {/* ---------- Signup Form ---------- */}
             <Container maxWidth="sm" sx={{ mt: 10 }}>
 
                 <Paper sx={{ padding: 2, textAlign: "center" }} >
@@ -89,13 +113,18 @@ function Signup() {
                         Sign Up
 
                     </Typography>
+
+
+                    {/* ---------- Form ---------- */}
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <TextField id="outlined-basic" label="Enter name" variant="outlined" fullWidth sx={{ mb: 2 }}
                             {...register("name", { required: "Name is required" })}
                             error={!!errors.name}
                             helperText={errors.name?.message}
                         />
-                        <TextField id="outlined-basic" label="Enter email" variant="outlined" fullWidth sx={{ mb: 2 }}
+
+                        {/* Email Field */}
+                        <TextField id="outlined-basic2" label="Enter email" variant="outlined" fullWidth sx={{ mb: 2 }}
                             {...register("email", {
                                 required: "Email is required",
                                 pattern: {
@@ -106,8 +135,10 @@ function Signup() {
                             error={!!errors.email}
                             helperText={errors.email?.message}
 
-
                         />
+
+
+                        {/* Password Field */}
                         <TextField id="outlined-basic" label="Enter password" variant="outlined" fullWidth sx={{ mb: 2 }}
                             type={showPassword ? "text" : "password"}
                             {...register("password", { required: "Password is required" })}
@@ -131,6 +162,9 @@ function Signup() {
 
 
                         />
+
+
+                        {/* Confirm Password Field */}
                         <TextField id="outlined-basic" label="Confirm Password" variant="outlined" fullWidth sx={{ mb: 2 }}
                             type={showPassword ? "text" : "password"}
                             {...register("confirmPassword", {
@@ -157,7 +191,7 @@ function Signup() {
 
                         />
 
-
+                        {/* Submit Button */}
                         <Button
                             type="submit"
                             variant="contained"
@@ -171,6 +205,9 @@ function Signup() {
 
                 </Paper>
             </Container>
+
+
+            {/* ---------- Error Snackbar ---------- */}
             <Snackbar
                 open={openError}
                 autoHideDuration={4000}
@@ -182,6 +219,8 @@ function Signup() {
                 </Alert>
             </Snackbar>
 
+
+            {/* ---------- Success Snackbar ---------- */}
             <Snackbar
                 open={openSuccess}
                 autoHideDuration={2500}
@@ -197,7 +236,7 @@ function Signup() {
                     {successMsg}
                 </Alert>
             </Snackbar>
-            
+
 
 
 
