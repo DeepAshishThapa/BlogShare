@@ -62,7 +62,9 @@ function Login() {
 
         try {
             // Attempt login via Appwrite
-            const userData = await authService.login(data)
+            await authService.login(data)
+
+             const userData = await authService.getAccount()
 
 
             // Save user data to Redux store
