@@ -7,8 +7,7 @@ import Addposts from "@/pages/Addposts";
 import Editpost from "@/pages/Editpost";
 import Post from "@/pages/Post";
 import RequireAuth from "@/pages/RequireAuth";
-
-
+import Notfound from "@/pages/Notfound";
 import Homepage from "@/pages/Homepage";
 
 function AppRoutes() {
@@ -29,6 +28,9 @@ function AppRoutes() {
           <Route path="edit-post/:slug" element={<Editpost/>}/>
            
           </Route>
+
+          {/* 404 Page (catch-all) */}
+          <Route path="*" element={<Notfound/>}/>
 
 
         </Route>
