@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
-import RTE from "../RTE";
-import postService from "../../Appwrite/post/api";
+import RTE from "../RTE";   // custom rich text editor component
+import postService from "../../Appwrite/post/api";    // Appwrite service for CRUD operations
 import { Box, TextField, InputLabel, MenuItem, FormControl, Select, Button } from "@mui/material";
-import { Controller } from "react-hook-form";
-
 
 
 
 export default function PostForm({ post }) {
 
+
+    // Initialize react-hook-form with default values (used for both create and edit)
     const { control, register, handleSubmit, setValue, getValues, formState: { errors, isSubmitting }, watch } = useForm(
         {
             defaultValues: {
@@ -23,13 +23,15 @@ export default function PostForm({ post }) {
             }
         }
     )
-    const slug = watch("slug")
 
-    const navigate = useNavigate();
-    const userData = useSelector((state) => state.auth.userData)
 
-    const [imgUrl, setImgUrl] = useState("");
+    const slug = watch("slug")                                   // Watch for slug changes in real-time
+    const navigate = useNavigate();                              // Used for navigation after submit or cancel
+    const userData = useSelector((state) => state.auth.userData) // Get logged-in user data from Redux
+    const [imgUrl, setImgUrl] = useState("");                    // For previewing uploaded image
 
+
+    // Load preview image when editing an existing post
     useEffect(() => {
         let alive = true;
         (async () => {
@@ -46,32 +48,39 @@ export default function PostForm({ post }) {
             }
         })();
         return () => {
-            alive = false;
+            alive = false;        // cleanup when component unmounts
         };
     }, [post?.featuredImage]);
 
-    const onSubmit = useCallback(async (data) => {
 
+    // Handle form submission (create or update)
+    const onSubmit = useCallback(async (data) => {
         try {
             if (post) {
+                // --- Editing an existing post ---
                 const file = data.image?.[0] ? await postService.uploadfile(data.image[0]) : null;
 
+
+                // Delete old image if a new one is uploaded
                 if (file) {
                     postService.deletefile(post.featuredImage)
-
                 }
+
+
+                // Update the existing post in database
                 const dbPost = await postService.UpdatePost({
                     ...data,
                     slug: post.$id,
                     featuredImage: file ? file.$id : post?.featuredImage,
                 })
+
                 if (dbPost) {
-                    navigate(`/post/${dbPost.$id}`)
+                    navigate(`/post/${dbPost.$id}`)       // Redirect to updated post
                 }
             }
             else {
+                // --- Creating a new post --
                 const file = await postService.uploadfile(data.image[0])
-
                 if (file) {
                     const fileId = file.$id
                     data.featuredImage = fileId
@@ -81,37 +90,26 @@ export default function PostForm({ post }) {
 
                     })
                     if (dbPost) {
-                        navigate(`/post/${dbPost.$id}`)
+                        navigate(`/post/${dbPost.$id}`)    // Redirect to created post
                     }
                 }
 
             }
-
-
-
-
-
-
-
-
         }
-
-
-
         catch (error) {
             console.log(error)
-
         }
-
     }, [])
 
+
+    // Function to automatically generate slug from title
     const slugTransform = useCallback((value) => {
         if (value && typeof value === "string")
             return value
                 .trim()
                 .toLowerCase()
-                .replace(/[^a-zA-Z\d\s]+/g, "-")
-                .replace(/\s/g, "-");
+                .replace(/[^a-zA-Z\d\s]+/g, "-")       // replace special chars with "-"
+                .replace(/\s/g, "-");                   // replace spaces with "-"
 
         return "";
     }, []);
@@ -146,7 +144,7 @@ export default function PostForm({ post }) {
 
                 />
                 <TextField
-                    id="outlined-basic"
+                    id="outlined-basic2"
                     label="slug"
                     fullWidth
                     sx={{ mb: 2 }}
@@ -237,7 +235,7 @@ export default function PostForm({ post }) {
                                 bgcolor: "black",
 
                             },
-                           
+
 
 
                         }}
