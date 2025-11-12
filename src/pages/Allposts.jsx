@@ -8,6 +8,7 @@ function Allposts() {
 
   return (
     <>
+    {/*  Outer container for the hero section */}
       <Box
         sx={{
           backgroundImage: 'linear-gradient(160deg, #0a0a0f 0%, #0c1445 40%, #111d5e 100%)',
@@ -16,6 +17,8 @@ function Allposts() {
 
         }}
       >
+
+         {/*Main content section — displays all posts */}
         <AllpostsHero/>
         
         
