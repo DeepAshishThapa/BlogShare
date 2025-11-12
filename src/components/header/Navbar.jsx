@@ -107,7 +107,7 @@ function ResponsiveAppBar() {
     <>
       <AppBar position="fixed"
         sx={{
-          backgroundImage: 'linear-gradient(to right, #0a1f44 0%, #1d3989 70%)',
+           backgroundImage: 'linear-gradient(160deg, #0a0a0f 0%, #0c1445 40%, #111d5e 100%)',
           bgcolor: 'transparent',
         }}
       >
