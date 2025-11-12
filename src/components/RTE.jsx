@@ -7,12 +7,12 @@ export default function RTE({ control, name, defaultValue = [defaultValue], labe
         <>
             {label &&
                 <Box
-                    
+
                     sx={{
                         display: "inline-block",
                         mb: 1,
                         pl: 1,
-                        color:"gray"
+                        color: "gray"
 
 
                     }}
@@ -30,28 +30,43 @@ export default function RTE({ control, name, defaultValue = [defaultValue], labe
 
                     <Editor
                         apiKey='7fftz4fxet391uev8nhcagzn9ahsta2yzdx3njpkl6zd3e37'
-                         value={value}  
-                         onEditorChange={onChange} 
+                        value={value}
+                        onEditorChange={onChange}
                         init={{
+
+                            height: 400,
+                            menubar: "file edit view insert format tools table help",
                             plugins: [
-                                // Core editing features
-                                'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'link', 'lists', 'searchreplace', 'table', 'visualblocks', 'wordcount',
-                                // Your account includes a free trial of TinyMCE premium features
-                                // Try the most popular premium features until Nov 10, 2025:
-                                'checklist', 'casechange', 'formatpainter', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
+                                "anchor",
+                                "autolink",
+                                "charmap",
+                                "codesample",
+                                "emoticons",
+                                "link",
+                                "lists",
+                                "searchreplace",
+                                "table",
+                                "visualblocks",
+                                "wordcount",
+                                "code",
+                                "image",
+                                "media",
+                                "autoresize",
                             ],
-                            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography uploadcare | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-                            tinycomments_mode: 'embedded',
-                            tinycomments_author: 'Author name',
-                            mergetags_list: [
-                                { value: 'First.Name', title: 'First Name' },
-                                { value: 'Email', title: 'Email' },
-                            ],
-                            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
-                            uploadcare_public_key: '78450930a6481309eaa3',
+                            toolbar:
+                                "undo redo | blocks fontfamily fontsize | " +
+                                "bold italic underline strikethrough | " +
+                                "link image media table | " +
+                                "bullist numlist | alignleft aligncenter alignright | " +
+                                "outdent indent | codesample code | removeformat",
+                            // branding: false,
+                            
+                            statusbar: true,
+                            content_style:
+                                "body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size:14px; }",
                         }}
-                        
-                        
+
+
                     />
                 )}
             />
