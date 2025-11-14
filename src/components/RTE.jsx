@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import { Controller } from "react-hook-form";
 
-export default function RTE({ control, name, defaultValue = [defaultValue], label }) {
+export default function RTE({ control, name, label }) {
     return (
         <>
             {label &&
@@ -25,12 +25,12 @@ export default function RTE({ control, name, defaultValue = [defaultValue], labe
             <Controller
                 name={name || "content"}
                 control={control}
-                defaultValue={defaultValue}
+                
                 render={({ field: { onChange, value } }) => (
 
                     <Editor
                         apiKey='7fftz4fxet391uev8nhcagzn9ahsta2yzdx3njpkl6zd3e37'
-                        value={value}
+                        value={value||""}
                         onEditorChange={onChange}
                         init={{
 
