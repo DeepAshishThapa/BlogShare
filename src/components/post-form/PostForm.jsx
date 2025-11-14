@@ -7,6 +7,8 @@ import RTE from "../RTE";   // custom rich text editor component
 import postService from "../../Appwrite/post/api";    // Appwrite service for CRUD operations
 import { Box, TextField, InputLabel, MenuItem, FormControl, Select, Button } from "@mui/material";
 
+import TagsSelect from "./TagsSelect";
+
 
 
 export default function PostForm({ post }) {
@@ -158,7 +160,7 @@ export default function PostForm({ post }) {
                     }}
 
                 />
-                <RTE control={control} name="content" defaultValue={getValues("content")} label="content:" />
+                <RTE control={control} name="content" label="content:" />
 
             </Box>
 
@@ -197,7 +199,7 @@ export default function PostForm({ post }) {
                 <Controller
                     name="status"
                     control={control}
-                    defaultValue="active"
+
                     rules={{ required: "Status is required" }}
                     render={({ field }) => (
                         <FormControl fullWidth>
@@ -207,6 +209,7 @@ export default function PostForm({ post }) {
                                 labelId="active-input"
                                 id="active"
                                 label="Status"
+                                sx={{mb:2}}
                             >
                                 <MenuItem value="active">active</MenuItem>
                                 <MenuItem value="inactive">inactive</MenuItem>
@@ -216,6 +219,10 @@ export default function PostForm({ post }) {
 
                     )}
                 />
+
+                <TagsSelect name="tags" control={control}/>
+
+                
                 <Box
                     sx={{
                         display: "flex",
@@ -229,7 +236,7 @@ export default function PostForm({ post }) {
 
                         disabled={isSubmitting}
                         sx={{
-                            bgcolor: isSubmitting ? "grey" : "#1d0a3d",   // 👈 change color while submitting
+                            bgcolor: isSubmitting ? "grey" : "#1d0a3d",   //  change color while submitting
                             color: isSubmitting ? "black" : "white",
                             "&:hover": {
                                 bgcolor: "black",
