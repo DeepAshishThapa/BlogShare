@@ -38,6 +38,8 @@ function Post() {
             postService.getpost(slug).then((post) => {
                 if (post) {
                     setpost(post)
+                    console.log(post)
+                    console.log(userData)
                 }
                 else {
                     navigate("/")

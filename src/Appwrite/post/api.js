@@ -17,7 +17,7 @@ export class PostService {
 
     }
 
-    async CreatePost({ slug, title, content, featuredImage, status, userId }) {
+    async CreatePost({ slug, title, content, featuredImage, status, userId,tags }) {
         try {
             return await this.tablesDB.createRow({
                 databaseId: config.appwriteDatabaseId,
@@ -28,6 +28,7 @@ export class PostService {
                     content,
                     featuredImage,
                     status,
+                    Tags:tags,
                     userid: userId
 
                 }
@@ -41,7 +42,7 @@ export class PostService {
             throw error
         }
     }
-    async UpdatePost({ slug, title, content, featuredImage, status }) {
+    async UpdatePost({ slug, title, content, featuredImage, status,tags }) {
         try {
             return await this.tablesDB.updateRow({
                 databaseId: config.appwriteDatabaseId,
@@ -52,6 +53,7 @@ export class PostService {
                     content,
                     featuredImage,
                     status,
+                    Tags:tags
 
 
                 }
