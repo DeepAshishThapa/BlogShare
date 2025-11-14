@@ -21,7 +21,9 @@ export default function PostForm({ post }) {
                 title: post?.title || "",
                 slug: post?.$id || "",
                 content: post?.content || "",
-                status: post?.status || "active"
+                status: post?.status || "active",
+                tags:post?.Tags || ""
+                
             }
         }
     )
@@ -222,7 +224,7 @@ export default function PostForm({ post }) {
 
                 <TagsSelect name="tags" control={control}/>
 
-                
+
                 <Box
                     sx={{
                         display: "flex",
