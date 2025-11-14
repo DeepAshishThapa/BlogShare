@@ -5,11 +5,11 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import FormHelperText from '@mui/material/FormHelperText';
 import { Controller } from 'react-hook-form';
 
 function TagsSelect({ name, control }) {
     const theme = useTheme();
-    const [personName, setPersonName] = React.useState([]);
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -23,7 +23,6 @@ function TagsSelect({ name, control }) {
         },
     };
 
-    // Available tags
     const names = [
         'Career & Learning',
         'Project Building',
@@ -37,69 +36,60 @@ function TagsSelect({ name, control }) {
         'Cloud & Devops',
     ];
 
-    function getStyles(name, personName, theme) {
+    function getStyles(name, selected, theme) {
         return {
-            fontWeight: personName.includes(name)
+            fontWeight: selected.includes(name)
                 ? theme.typography.fontWeightMedium
                 : theme.typography.fontWeightRegular,
         };
     }
 
-    // Handles selecting/unselecting tags
-    const handleChange = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setPersonName(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
-
     return (
-        <>
-            <Controller
-                name={name || "tags"}
-                control={control}
-                rules={{ required: "Tags is required" }}
+        <Controller
+            name={name || 'tags'}
+            control={control}
+            rules={{ required: 'Tags is required' }}
+            render={({ field, fieldState: { error } }) => {
+                const selected = field.value || [];  // always array
 
-                render={({ field }) => (
-                    <FormControl sx={{ m: 1, width: 300 }}>
-                        <InputLabel id="demo-multiple-name-label">Tags</InputLabel>
+                return (
+                    <FormControl sx={{ m: 1, width: 300 }} error={!!error}>
+                        <InputLabel id="tags-label">Tags</InputLabel>
                         <Select
-                            {...field}
-                            labelId="demo-multiple-name-label"
-                            id="demo-multiple-name"
+                            labelId="tags-label"
+                            id="tags"
                             multiple
-                            value={personName}
-                            onChange={handleChange}
                             input={<OutlinedInput label="Tags" />}
                             MenuProps={MenuProps}
+                            value={selected}
+                            onChange={(event) => {
+                                const {
+                                    target: { value },
+                                } = event;
+                                const newValue = typeof value === 'string'
+                                    ? value.split(',')
+                                    : value;
 
+                                // 🔥 Update RHF value
+                                field.onChange(newValue);
+                            }}
                         >
                             {names.map((name) => (
                                 <MenuItem
                                     key={name}
                                     value={name}
-                                    style={getStyles(name, personName, theme)}
+                                    style={getStyles(name, selected, theme)}
                                 >
                                     {name}
                                 </MenuItem>
                             ))}
                         </Select>
+                        {error && <FormHelperText>{error.message}</FormHelperText>}
                     </FormControl>
-
-                )}
-
-
-
-
-
-            />
-
-
-        </>
-    )
+                );
+            }}
+        />
+    );
 }
 
-export default TagsSelect
+export default TagsSelect;
