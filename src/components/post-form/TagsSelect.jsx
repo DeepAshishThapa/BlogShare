@@ -23,6 +23,7 @@ function TagsSelect({ name, control }) {
         },
     };
 
+    // Available tags
     const names = [
         'Career & Learning',
         'Project Building',
@@ -44,6 +45,7 @@ function TagsSelect({ name, control }) {
         };
     }
 
+    // Handles selecting/unselecting tags
     const handleChange = (event) => {
         const {
             target: { value },
