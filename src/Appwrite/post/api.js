@@ -1,6 +1,20 @@
 import { Client, TablesDB, ID, Storage, Query } from "appwrite";
 import config from "../../config/config";
 
+/**
+ * PostService
+ * ---------------------------------------------------------------
+ * Handles all Appwrite operations related to:
+ *  - Creating posts
+ *  - Updating posts
+ *  - Fetching single/multiple posts
+ *  - Filtering posts by tag
+ *  - Uploading / deleting images from storage
+ * 
+ * This class abstracts all backend interactions in one place,
+ * keeping your React components clean and easy to maintain.
+ */
+
 export class PostService {
     client = new Client()
     tablesDB;
@@ -17,7 +31,11 @@ export class PostService {
 
     }
 
-    async CreatePost({ slug, title, content, featuredImage, status, userId,tags }) {
+    /**
+    * Create a new post in Appwrite
+    * rowId = slug (unique identifier)
+    */
+    async CreatePost({ slug, title, content, featuredImage, status, userId, tags }) {
         try {
             return await this.tablesDB.createRow({
                 databaseId: config.appwriteDatabaseId,
@@ -28,13 +46,10 @@ export class PostService {
                     content,
                     featuredImage,
                     status,
-                    Tags:tags,
+                    Tags: tags,
                     userid: userId
 
                 }
-
-
-
 
             })
         }
@@ -42,7 +57,12 @@ export class PostService {
             throw error
         }
     }
-    async UpdatePost({ slug, title, content, featuredImage, status,tags }) {
+
+
+    /**
+     * Update an existing post by slug (rowId)
+     */
+    async UpdatePost({ slug, title, content, featuredImage, status, tags }) {
         try {
             return await this.tablesDB.updateRow({
                 databaseId: config.appwriteDatabaseId,
@@ -53,14 +73,9 @@ export class PostService {
                     content,
                     featuredImage,
                     status,
-                    Tags:tags
-
+                    Tags: tags
 
                 }
-
-
-
-
             })
         }
         catch (error) {
@@ -68,6 +83,10 @@ export class PostService {
         }
     }
 
+
+    /**
+    * Delete a post from database using slug
+    */
     async deletepost(slug) {
         try {
             const response = await this.tablesDB.deleteRow({
@@ -84,6 +103,12 @@ export class PostService {
 
         }
     }
+
+
+
+    /**
+      * Fetch a single post by slug
+      */
     async getpost(slug) {
         try {
             return await this.tablesDB.getRow({
@@ -100,6 +125,11 @@ export class PostService {
         }
 
     }
+
+
+    /**
+   * Fetch all active posts
+   */
     async getposts() {
         try {
             return await this.tablesDB.listRows({
@@ -116,6 +146,36 @@ export class PostService {
         }
     }
 
+
+
+    /**
+    * Fetch posts by a single tag
+    * Tags is an ARRAY in DB → Query.equal("Tags", tagString)
+    * returns posts whose Tags array CONTAINS that tag
+    */
+    async gettagsposts(tags) {
+        try {
+            return await this.tablesDB.listRows({
+                databaseId: config.appwriteDatabaseId,
+                tableId: config.appwriteTableId,
+                queries: [
+                    Query.equal('Tags', tags)
+                ]
+            })
+
+
+        }
+        catch (error) {
+            return false
+
+        }
+    }
+
+
+
+    /**
+     * Upload a file (featuredImage) to Appwrite Storage
+     */
     async uploadfile(file) {
         try {
             return await this.storage.createFile({
@@ -131,6 +191,11 @@ export class PostService {
         }
     }
 
+
+
+    /**
+    * Delete a file from Storage by fileId
+    */
     async deletefile(fileId) {
         try {
             const result = await this.storage.deleteFile({
@@ -145,7 +210,12 @@ export class PostService {
             console.log("Appwrite error", error)
         }
     }
+    
 
+
+    /**
+     * Get public view link for an uploaded file
+     */
     async getfilepreview(fileId) {
 
         const u = await this.storage.getFileView({
@@ -158,5 +228,7 @@ export class PostService {
 
     }
 }
+
+
 const postService = new PostService();
 export default postService
