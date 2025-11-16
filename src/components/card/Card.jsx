@@ -55,7 +55,9 @@ export default function MediaCard({ post }) {
         maxWidth: '100%',
         mb: 10,
         px: 1,
-        py: 2
+        py: 2,
+        
+
 
 
       }}>
