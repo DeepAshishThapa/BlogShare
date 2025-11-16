@@ -35,7 +35,7 @@ export class PostService {
     * Create a new post in Appwrite
     * rowId = slug (unique identifier)
     */
-    async CreatePost({ slug, title, content, featuredImage, status, userId, tags }) {
+    async CreatePost({ slug, title, content, featuredImage, status, userId, tags,userName }) {
         try {
             return await this.tablesDB.createRow({
                 databaseId: config.appwriteDatabaseId,
@@ -47,7 +47,8 @@ export class PostService {
                     featuredImage,
                     status,
                     Tags: tags,
-                    userid: userId
+                    userid: userId,
+                    userName
 
                 }
 
@@ -62,7 +63,7 @@ export class PostService {
     /**
      * Update an existing post by slug (rowId)
      */
-    async UpdatePost({ slug, title, content, featuredImage, status, tags }) {
+    async UpdatePost({ slug, title, content, featuredImage, status, tags,userName }) {
         try {
             return await this.tablesDB.updateRow({
                 databaseId: config.appwriteDatabaseId,
@@ -73,7 +74,8 @@ export class PostService {
                     content,
                     featuredImage,
                     status,
-                    Tags: tags
+                    Tags: tags,
+                    userName
 
                 }
             })
