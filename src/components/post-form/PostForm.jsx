@@ -23,6 +23,7 @@ export default function PostForm({ post }) {
                 content: post?.content || "",
                 status: post?.status || "active",
                 tags:post?.Tags || ""
+
                 
             }
         }
@@ -33,6 +34,9 @@ export default function PostForm({ post }) {
     const navigate = useNavigate();                              // Used for navigation after submit or cancel
     const userData = useSelector((state) => state.auth.userData) // Get logged-in user data from Redux
     const [imgUrl, setImgUrl] = useState("");                    // For previewing uploaded image
+    const userName=userData.name                              //get the author name
+
+    
 
 
     // Load preview image when editing an existing post
@@ -74,6 +78,7 @@ export default function PostForm({ post }) {
                 // Update the existing post in database
                 const dbPost = await postService.UpdatePost({
                     ...data,
+                    userName,
                     slug: post.$id,
                     featuredImage: file ? file.$id : post?.featuredImage,
                 })
@@ -90,6 +95,7 @@ export default function PostForm({ post }) {
                     data.featuredImage = fileId
                     const dbPost = await postService.CreatePost({
                         ...data,
+                        userName,
                         userId: userData.$id
 
                     })
@@ -117,6 +123,8 @@ export default function PostForm({ post }) {
 
         return "";
     }, []);
+
+    
 
     return (
         <Box
