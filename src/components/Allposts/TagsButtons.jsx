@@ -11,14 +11,15 @@ export default function TagsButtons({ tags, selectedTag, onTagChange }) {
             <Box
                 sx={{
                     display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent: "center",
+                    flexWrap:"wrap",
                     '& > *': {
                         m: 1,
                     },
                 }}
             >
-                <ButtonGroup variant="outlined" aria-label="Basic button group">
+                
                     {tags.map((tag) => (
                         <Button
                             key={tag}
@@ -30,7 +31,7 @@ export default function TagsButtons({ tags, selectedTag, onTagChange }) {
                         </Button>
 
                     ))}
-                </ButtonGroup>
+                
             </Box>
 
 
