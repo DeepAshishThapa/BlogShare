@@ -34,6 +34,8 @@ function TagsSelect({ name, control }) {
         'Portfilio',
         'Job Search',
         'Cloud & Devops',
+        'others'
+        
     ];
 
     function getStyles(name, selected, theme) {
