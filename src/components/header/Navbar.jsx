@@ -21,7 +21,7 @@ import {
 
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -38,21 +38,26 @@ import { useDispatch } from 'react-redux';
 function ResponsiveAppBar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [userName,setuserName]=useState("")
+  const [userName, setuserName] = useState("")
 
-   //fetching user Name
-  authService.getAccount().then((res)=>{
-    if (res){
-      setuserName(res.name)
-
+  //fetching user Name
+  useEffect(() => {
+    if (!authStatus) {
+      setuserName("");
+      return;
     }
-    else{
-      setuserName("")
+    authService.getAccount().then((res) => {
+      if (res) {
+        setuserName(res.name)
 
-    }
+      }
+      else {
+        setuserName("")
+      }
+    })
 
-  })
-  
+  }, [authStatus])
+
 
   //  Check if user is logged in (from Redux state)
   const authStatus = useSelector((state) => state.auth.status)
@@ -125,9 +130,9 @@ function ResponsiveAppBar() {
     <>
       <AppBar position="fixed"
         sx={{
-           backgroundImage: 'linear-gradient(160deg, #0a0a0f 0%, #0c1445 40%, #111d5e 100%)',
+          backgroundImage: 'linear-gradient(160deg, #0a0a0f 0%, #0c1445 40%, #111d5e 100%)',
           bgcolor: 'transparent',
-          
+
         }}
       >
 
@@ -263,9 +268,9 @@ function ResponsiveAppBar() {
                       color: isActive ? "#93b1ce" : "white",
                       textDecoration: "none",
                     })}
-                    
+
                   >
-                    <Button sx={{ color: "inherit",textTransform: "none",fontWeight: 600, }}>{authitem.name}</Button>
+                    <Button sx={{ color: "inherit", textTransform: "none", fontWeight: 600, }}>{authitem.name}</Button>
                   </NavLink>
                 ))
               )}
