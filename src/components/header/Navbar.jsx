@@ -21,6 +21,7 @@ import {
 
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useState } from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -28,6 +29,7 @@ import { useNavigate, NavLink } from "react-router";
 
 
 import authService from '@/Appwrite/auth/auth';
+
 import { logout } from "../../Appwrite/auth/authSlice.js"
 import { useDispatch } from 'react-redux';
 
@@ -36,6 +38,21 @@ import { useDispatch } from 'react-redux';
 function ResponsiveAppBar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [userName,setuserName]=useState("")
+
+   //fetching user Name
+  authService.getAccount().then((res)=>{
+    if (res){
+      setuserName(res.name)
+
+    }
+    else{
+      setuserName("")
+
+    }
+
+  })
+  
 
   //  Check if user is logged in (from Redux state)
   const authStatus = useSelector((state) => state.auth.status)
@@ -51,9 +68,10 @@ function ResponsiveAppBar() {
 
   //  Auth-related actions (login/signup/logout)
   const authitems = [
-    { name: "Login", slug: "/login", active: !authStatus },
-    { name: "Signup", slug: "/signup", active: !authStatus },
-    { name: "Logout", slug: "/", active: authStatus },
+    { name: "LOGIN", slug: "/login", active: !authStatus },
+    { name: "SIGNUP", slug: "/signup", active: !authStatus },
+    { name: userName, active: authStatus },
+    { name: "LOGOUT", slug: "/", active: authStatus },
   ]
 
 
@@ -109,6 +127,7 @@ function ResponsiveAppBar() {
         sx={{
            backgroundImage: 'linear-gradient(160deg, #0a0a0f 0%, #0c1445 40%, #111d5e 100%)',
           bgcolor: 'transparent',
+          
         }}
       >
 
@@ -228,7 +247,7 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 0 }}>
               {authitems.map((authitem) =>
                 authitem.active &&
-                (authitem.name === "Logout" ? (
+                (authitem.name === "LOGOUT" ? (
                   <Button
                     key={authitem.slug}
                     onClick={handleOpenLogoutDialog}   //  use handler instead of NavLink
@@ -244,8 +263,9 @@ function ResponsiveAppBar() {
                       color: isActive ? "#93b1ce" : "white",
                       textDecoration: "none",
                     })}
+                    
                   >
-                    <Button sx={{ color: "inherit" }}>{authitem.name}</Button>
+                    <Button sx={{ color: "inherit",textTransform: "none",fontWeight: 600, }}>{authitem.name}</Button>
                   </NavLink>
                 ))
               )}
