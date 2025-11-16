@@ -30,6 +30,7 @@ function AllpostsSection() {
         'Portfilio',
         'Job Search',
         'Cloud & Devops',
+        'others'
     ]
 
 
