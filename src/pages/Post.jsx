@@ -3,6 +3,7 @@ import postService from '@/Appwrite/post/api'
 import { Link, useNavigate, useParams } from 'react-router'
 import parse from "html-react-parser"
 import { useSelector } from 'react-redux'
+import Avatar from '@mui/material/Avatar';
 import {
     Container,
     Box,
@@ -95,31 +96,57 @@ function Post() {
                         position: 'relative'
                     }}
                 >
-                    {/* Edit/Delete actions (only visible to author) */}
-                    {isAuthor &&
-                        <Box
-                            sx={{
-                                position: 'absolute',
-                                right: '2.8%',
-                                top: 0,
-                                zIndex: 2,
-                                display: 'flex',
-                                gap: 1.5
-                            }}
-                        >
-                            <Link to={`/edit-post/${post.$id}`}>
-                                <Button sx={{ backgroundColor: '#1d0a3d', color: 'white' }}>
-                                    Edit
-                                </Button>
-                            </Link>
 
-                            <Button variant="contained" color="error" onClick={handleOpenDeleteDialog}>
-                                Delete
-                            </Button>
+
+                    {/* Top-right header: username + edit/delete if author */}
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            right: '2.8%',
+                            top: 0,
+                            zIndex: 2,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1.5,
+                            color: 'grey',
+                            justifyContent: 'space-between',
+                            width: '90%'
+                        }}
+                    >
+
+                        {/*showing the author with avatar*/}
+                        <Box sx={{display:'flex',gap:1.5,alignItems:'center'}}>
+                            <Avatar src="/broken-image.jpg" sx={{ width: 30, height: 30 }} />
+                            <Box sx={{ fontSize: '1.25rem', fontWeight: 900 }}>
+                                {post.userName}
+                            </Box>
                         </Box>
-                    }
 
-                     {/* Featured image */}
+                         {/*show the edit and delete button*/}
+                        {isAuthor && (
+                            <Box sx={{
+                                display: 'flex',
+                                gap: 2
+                            }}>
+
+                                <Link to={`/edit-post/${post.$id}`}>
+                                    <Button sx={{ backgroundColor: '#1d0a3d', color: 'white' }}>
+                                        Edit
+                                    </Button>
+                                </Link>
+
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={handleOpenDeleteDialog}
+                                >
+                                    Delete
+                                </Button>
+                            </Box>
+                        )}
+                    </Box>
+
+                    {/* Featured image */}
                     <Box
                         component="img"
                         src={imgUrl}
@@ -127,7 +154,7 @@ function Post() {
                     />
 
 
-                     {/* Title + Content */}
+                    {/* Title + Content */}
                     <Box
                         sx={{
                             display: "flex",
@@ -150,7 +177,7 @@ function Post() {
                 </Container>
             </Box>
 
-            
+
             {/* ===== Delete Confirmation Dialog ===== */}
             <Dialog
                 open={openDeleteDialog}
