@@ -41,6 +41,25 @@ export class commentsService {
     }
 
 
+    async getCommentByPost(postid){
+        try{
+            result=await this.tablesDB.listRows({
+                databaseId: config.appwriteDatabaseId,
+                tableId: config.appwriteCommentsTableId,
+                queries:[
+                    Query.equal("posid", postid),
+                ]
+            })
+            return result.rows
+
+        }
+        catch(error){
+            return false
+
+        }
+    }
+
+
 
 
 }
