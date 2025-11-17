@@ -19,7 +19,7 @@ export class commentsService {
 
     async createComment(postid, userid, username, content) {
         try {
-            return await tablesDB.createRow({
+            return await this.tablesDB.createRow({
                 databaseId: config.appwriteDatabaseId,
                 tableId: config.appwriteCommentsTableId,
                 rowId: ID.unique(),
