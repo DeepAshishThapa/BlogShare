@@ -60,6 +60,25 @@ export class commentsService {
     }
 
 
+    async updateComment(commentid,newContent){
+        try{
+            const row=await tablesDB.updateRow({
+                 databaseId: config.appwriteDatabaseId,
+                tableId: config.appwriteCommentsTableId,
+                rowId:commentid,
+                data:{
+                    content:newContent
+                }
+
+
+            })
+        }
+        catch(error){
+            return false
+        }
+    }
+
+
 
 
 }
