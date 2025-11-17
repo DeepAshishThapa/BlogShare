@@ -40,6 +40,9 @@ function ResponsiveAppBar() {
   const navigate = useNavigate()
   const [userName, setuserName] = useState("")
 
+   //  Check if user is logged in (from Redux state)
+  const authStatus = useSelector((state) => state.auth.status)
+
   //fetching user Name
   useEffect(() => {
     if (!authStatus) {
@@ -57,10 +60,6 @@ function ResponsiveAppBar() {
     })
 
   }, [authStatus])
-
-
-  //  Check if user is logged in (from Redux state)
-  const authStatus = useSelector((state) => state.auth.status)
 
 
   //  Page links shown in the navbar
