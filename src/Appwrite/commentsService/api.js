@@ -3,7 +3,7 @@ import config from "@/config/config";
 
 
 // Service class responsible for all CRUD operations related to comments
-export class commentsService {
+export class CommentsService {
     client = new Client()
     tablesDB;
 
@@ -95,5 +95,5 @@ export class commentsService {
 
 }
 
-const commentsService = new commentsService();
+const commentsService = new CommentsService();
 export default commentsService
