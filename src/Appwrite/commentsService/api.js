@@ -94,3 +94,6 @@ export class commentsService {
     }
 
 }
+
+const commentsService = new commentsService();
+export default commentsService
