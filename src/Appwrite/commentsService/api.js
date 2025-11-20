@@ -18,7 +18,7 @@ export class CommentsService {
     }
 
     // Create a new comment for a specific post
-    async createComment(postid, userid, username, content) {
+    async createComment({postid, userid, username, content}) {
         try {
             return await this.tablesDB.createRow({
                 databaseId: config.appwriteDatabaseId,
