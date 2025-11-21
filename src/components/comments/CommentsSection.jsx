@@ -26,7 +26,7 @@ function CommentsSection({ postid }) {
         const fetchcomments = async () => {
 
             setloading(true)
-            const results = await commentsService.getCommentByPost(postId)
+            const results = await commentsService.getCommentByPost(postid)
             if (results) {
                 setcomments(results)
             } else {
@@ -63,10 +63,25 @@ function CommentsSection({ postid }) {
             alert("failed to post comment")
         }
     }
+     
+
+     // Delete comment
+    const handleDelete=async(commentid)=>{
+        result=await commentsService.deleteComment(commentid)
+        if (result){
+            setcomments((prev)=>prev.filter((c)=>c.$id !== commentid))
+
+        }else{
+            alert("failed to delete comments")
+        }
+
+
+    }
 
 
     return (
         <>
+
 
 
 
