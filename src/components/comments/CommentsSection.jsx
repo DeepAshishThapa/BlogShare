@@ -110,7 +110,7 @@ function CommentsSection({ postid }) {
     }
 
     //handle update of the comments
-    const handleEdit = async (commentid) => {
+    const handleUpdate = async (commentid) => {
         const trimmed = editingValue.trim();
         if (!trimmed) return;
 
