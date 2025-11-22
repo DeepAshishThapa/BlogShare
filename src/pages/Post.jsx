@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router'
 import parse from "html-react-parser"
 import { useSelector } from 'react-redux'
 import Avatar from '@mui/material/Avatar';
+import CommentsSection from '@/components/comments/CommentsSection'
 import {
     Container,
     Box,
@@ -115,14 +116,14 @@ function Post() {
                     >
 
                         {/*showing the author with avatar*/}
-                        <Box sx={{display:'flex',gap:1.5,alignItems:'center'}}>
+                        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
                             <Avatar src="/broken-image.jpg" sx={{ width: 30, height: 30 }} />
                             <Box sx={{ fontSize: '1.25rem', fontWeight: 900 }}>
                                 {post.userName}
                             </Box>
                         </Box>
 
-                         {/*show the edit and delete button*/}
+                        {/*show the edit and delete button*/}
                         {isAuthor && (
                             <Box sx={{
                                 display: 'flex',
@@ -174,8 +175,12 @@ function Post() {
                             {parse(post.content)}
                         </Box>
                     </Box>
+                    {/*comments section*/}
+                    <CommentsSection postid={post.$id} />
                 </Container>
             </Box>
+
+
 
 
             {/* ===== Delete Confirmation Dialog ===== */}
