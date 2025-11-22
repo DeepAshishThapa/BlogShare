@@ -139,7 +139,7 @@ function CommentsSection({ postid }) {
         <>
             <Box mt={4}>
                 {/* Header */}
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom sx={{ color: "black" }}>
                     Comments
                 </Typography>
 
@@ -154,14 +154,21 @@ function CommentsSection({ postid }) {
                         size="small"
                         placeholder={
                             userData ? "Write a comment..." : "login to write a comment..."
+
                         }
                         disabled={!userData || isSubmitting}
                         {...register("content", { required: true })}
+                        sx={{
+                            "& .MuiOutlinedInput-input::placeholder": {
+                                color: "#9e9e9e", // <-- your placeholder color
+                                opacity: 1,       // <-- must be 1 or color will look faded
+                            }
+                        }}
                     />
                     <Button
                         type="submit"
                         variant="contained"
-                        disabled={!user || isSubmitting}
+                        disabled={!userData || isSubmitting}
                     >
 
                     </Button>
