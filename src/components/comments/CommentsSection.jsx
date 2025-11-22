@@ -199,7 +199,7 @@ function CommentsSection({ postid }) {
                 ) : (
                     <Stack spacing={1.5}>
                         {comments.map((comment) => {
-                            const isOwner = userData && userData.$id
+                            const isOwner = userData && comment.userid=== userData.$id
 
                             return (
                                 <Paper key={comment.$id} sx={{ p: 1.5 }}>
