@@ -172,6 +172,88 @@ function CommentsSection({ postid }) {
 
             </Box>
 
+            {/* Comments list */}
+            {loading ? (
+                <Box display="flex" justifyContent="center" py={2}>
+                    <CircularProgress size={24} />
+                </Box>
+            ) : (
+                comments.length == 0 ? (
+                    <Typography variant="body2" color="text.secondary">
+                        No comments yet. Be the first to comment!
+                    </Typography>
+                ) : (
+                    <Stack spacing={1.5}>
+                        {comments.map((comment) => {
+                            const isOwner = userData && userData.$id
+
+                            return (
+                                <Paper key={comment.$id} sx={{ p: 1.5 }}>
+                                    <Box display="flex" justifyContent="space-between" mb={0.5}>
+                                        <Typography variant="subtitle2">
+                                            {comment.username || "Anonymous"}
+                                        </Typography>
+
+                                        {/* Owner actions */}
+                                        {isOwner && (
+                                            <Box>
+                                                {editingId === comment.$id ? (
+                                                    <>
+                                                        <IconButton
+                                                            size="small"
+                                                            onClick={() => handleUpdate(comment.$id)}
+                                                            disabled={updating}
+                                                        >
+                                                            <SaveIcon fontSize="small" />
+                                                        </IconButton>
+                                                        <IconButton size="small" onClick={cancelEdit}>
+                                                            <CloseIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <IconButton
+                                                            size="small"
+                                                            onClick={() => startEdit(comment)}
+                                                        >
+                                                            <EditIcon fontSize="small" />
+                                                        </IconButton>
+                                                        <IconButton
+                                                            size="small"
+                                                            onClick={() => handleDelete(comment.$id)}
+                                                        >
+                                                            <DeleteIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </>
+                                                )}
+                                            </Box>
+                                        )}
+                                    </Box>
+
+                                    {editingId === comment.$id ? (
+                                        <TextField
+                                            fullWidth
+                                            multiline
+                                            minRows={1}
+                                            value={editingValue}
+                                            onChange={(e) => seteditingValue(e.target.value)}
+                                            size="small"
+                                        />
+                                    ) : (
+                                        <Typography variant="body2">{comment.content}</Typography>
+                                    )}
+
+
+
+
+                                </Paper>
+                            )
+                        })}
+                    </Stack>
+                )
+            )
+            }
+
 
 
 
