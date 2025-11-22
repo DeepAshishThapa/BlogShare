@@ -3,6 +3,21 @@ import commentsService, { CommentsService } from "@/Appwrite/CommentsService/api
 import { useSelector } from "react-redux"
 import { useForm } from "react-hook-form"
 
+import {
+    Box,
+    TextField,
+    Button,
+    Typography,
+    CircularProgress,
+    IconButton,
+    Paper,
+    Stack,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import CloseIcon from "@mui/icons-material/Close";
+
 
 
 function CommentsSection({ postid }) {
@@ -120,12 +135,43 @@ function CommentsSection({ postid }) {
 
     }
 
-
-
-
-
     return (
         <>
+            <Box mt={4}>
+                {/* Header */}
+                <Typography variant="h6" gutterBottom>
+                    Comments
+                </Typography>
+
+                {/* New comment input (react-hook-form) */}
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit(onSubmit)}
+                    sx={{ display: "flex", gap: 2, mb: 3 }}
+                >
+                    <TextField
+                        fullWidth
+                        size="small"
+                        placeholder={
+                            userData ? "Write a comment..." : "login to write a comment..."
+                        }
+                        disabled={!userData || isSubmitting}
+                        {...register("content", { required: true })}
+                    />
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        disabled={!user || isSubmitting}
+                    >
+
+                    </Button>
+
+
+
+                </Box>
+
+            </Box>
+
 
 
 
