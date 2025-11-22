@@ -86,7 +86,7 @@ function CommentsSection({ postid }) {
 
     // Delete comment
     const handleDelete = async (commentid) => {
-        result = await commentsService.deleteComment(commentid)
+        const result = await commentsService.deleteComment(commentid)
         if (result) {
             setcomments((prev) => prev.filter((c) => c.$id !== commentid))
 
@@ -160,8 +160,8 @@ function CommentsSection({ postid }) {
                         {...register("content", { required: true })}
                         sx={{
                             "& .MuiOutlinedInput-input::placeholder": {
-                                color: "#9e9e9e", // <-- your placeholder color
-                                opacity: 1,       // <-- must be 1 or color will look faded
+                                color: "#9e9e9e", //  placeholder color
+                                opacity: 1,       
                             }
                         }}
                     />
@@ -169,7 +169,14 @@ function CommentsSection({ postid }) {
                         type="submit"
                         variant="contained"
                         disabled={!userData || isSubmitting}
+                        sx={{
+                            "&.Mui-disabled": {
+                                backgroundColor: "#787474",   // light gray background
+                                color: "#353333",                // visible text color
+                            }
+                        }}
                     >
+                        {isSubmitting ? "Posting..." : "Post"}
 
                     </Button>
 
@@ -213,7 +220,7 @@ function CommentsSection({ postid }) {
                                                         >
                                                             <SaveIcon fontSize="small" />
                                                         </IconButton>
-                                                        <IconButton size="small" onClick={cancelEdit}>
+                                                        <IconButton size="small" onClick={closeEdit}>
                                                             <CloseIcon fontSize="small" />
                                                         </IconButton>
                                                     </>
