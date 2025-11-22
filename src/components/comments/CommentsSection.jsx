@@ -17,6 +17,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
+import Avatar from '@mui/material/Avatar';
 
 
 
@@ -161,7 +162,7 @@ function CommentsSection({ postid }) {
                         sx={{
                             "& .MuiOutlinedInput-input::placeholder": {
                                 color: "#9e9e9e", //  placeholder color
-                                opacity: 1,       
+                                opacity: 1,
                             }
                         }}
                     />
@@ -199,14 +200,23 @@ function CommentsSection({ postid }) {
                 ) : (
                     <Stack spacing={1.5}>
                         {comments.map((comment) => {
-                            const isOwner = userData && comment.userid=== userData.$id
+                            const isOwner = userData && comment.userid === userData.$id
 
                             return (
                                 <Paper key={comment.$id} sx={{ p: 1.5 }}>
                                     <Box display="flex" justifyContent="space-between" mb={0.5}>
-                                        <Typography variant="subtitle2">
-                                            {comment.username || "Anonymous"}
-                                        </Typography>
+                                        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+
+                                            <Avatar src="/broken-image.jpg" sx={{ width: 27, height: 27 }} />
+
+                                            <Typography variant="subtitle2">
+                                                {comment.username || "Anonymous"}
+                                            </Typography>
+
+
+
+                                        </Box>
+
 
                                         {/* Owner actions */}
                                         {isOwner && (
